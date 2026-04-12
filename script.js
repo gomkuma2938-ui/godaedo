@@ -20,92 +20,73 @@ const videoObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.6 });
 
 const container = document.getElementById('swipeContainer');
-let isMoving = false;
-let isDown = false;
-let startX, scrollLeft, velX, momentumID;
+let isMoving = false, isDown = false, startX, scrollLeft, velX, momentumID;
 
 if (container) {
     container.addEventListener('scroll', () => {
         if (isMoving) return;
-        
         const cards = container.querySelectorAll('.prayer-card');
         const cardWidth = cards[0].offsetWidth + 15;
         
-        // 1. 왼쪽 끝 도달 시
-        if (container.scrollLeft <= 5) { // 0 대신 여유값 5
+        if (container.scrollLeft <= 5) {
             isMoving = true;
-            container.style.scrollSnapType = 'none'; // 자석 일시 해제
+            container.style.scrollSnapType = 'none';
             container.scrollLeft = cardWidth * 5;
             setTimeout(() => {
-                container.style.scrollSnapType = 'x mandatory'; // 자석 복구
+                container.style.scrollSnapType = 'x mandatory';
                 isMoving = false;
             }, 50);
         } 
-        // 2. 오른쪽 끝 도달 시
         else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 5)) {
             isMoving = true;
-            container.style.scrollSnapType = 'none'; // 자석 일시 해제
+            container.style.scrollSnapType = 'none';
             container.scrollLeft = cardWidth;
             setTimeout(() => {
-                container.style.scrollSnapType = 'x mandatory'; // 자석 복구
+                container.style.scrollSnapType = 'x mandatory';
                 isMoving = false;
             }, 50);
         }
     });
 
-    // 드래그 시작
+    // 마우스 이벤트 (PC 전용으로 유지)
     container.addEventListener('mousedown', (e) => {
         isDown = true;
-        container.classList.add('active');
-        container.style.scrollSnapType = 'none'; // 드래그 중엔 자석 효과 끔
+        container.style.scrollSnapType = 'none';
         startX = e.pageX - container.offsetLeft;
         scrollLeft = container.scrollLeft;
-        cancelAnimationFrame(momentumID); // 이전 관성 중지
+        cancelAnimationFrame(momentumID);
     });
 
-    container.addEventListener('mouseleave', () => {
-        isDown = false;
-        container.style.scrollSnapType = 'x mandatory';
+    container.addEventListener('mouseleave', () => { 
+        isDown = false; 
+        container.style.scrollSnapType = 'x mandatory'; 
     });
 
-    container.addEventListener('mouseup', () => {
-        isDown = false;
-        container.style.scrollSnapType = 'x mandatory'; // 마우스 떼면 자석 효과 다시 켬
-        beginMomentum(); // 관성 시작
+    container.addEventListener('mouseup', () => { 
+        isDown = false; 
+        container.style.scrollSnapType = 'x mandatory'; 
+        if (Math.abs(velX) > 5) beginMomentum(); // 속도가 어느 정도 있을 때만 관성 실행
     });
 
     container.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX) * 2;
+        // 드래그 배율을 2 -> 1.5로 낮춰서 PC에서도 조금 더 묵직하게 조절
+        const walk = (x - startX) * 1.5; 
         const prev = container.scrollLeft;
         container.scrollLeft = scrollLeft - walk;
         velX = container.scrollLeft - prev;
-
-        // --- 드래그 중 실시간 무한 루프 체크 추가 ---
-        const cards = container.querySelectorAll('.prayer-card');
-        const cardWidth = cards[0].offsetWidth + 15;
-
-        // 왼쪽 끝으로 드래그할 때
-        if (container.scrollLeft <= 0) {
-            scrollLeft = cardWidth * 5 + (e.pageX - container.offsetLeft - startX); 
-            container.scrollLeft = cardWidth * 5;
-        } 
-        // 오른쪽 끝으로 드래그할 때
-        else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 2)) {
-            scrollLeft = cardWidth + (e.pageX - container.offsetLeft - startX);
-            container.scrollLeft = cardWidth;
-        }
-        // ------------------------------------------
     });
 
-    // 부드러운 관성 이동 함수
+    // 관성 함수: 마찰력을 높여서 금방 멈추게 조절 (0.98 -> 0.92)
     function beginMomentum() {
-        velX *= 0.95; // 마찰력 (숫자가 클수록 더 멀리 감)
-        if (Math.abs(velX) > 0.5) {
+        velX *= 0.92; 
+        if (Math.abs(velX) > 1) {
             container.scrollLeft += velX;
             momentumID = requestAnimationFrame(beginMomentum);
+        } else {
+            container.style.scrollSnapType = 'x mandatory';
         }
     }
 }
