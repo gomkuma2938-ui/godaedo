@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
+        @font-face {
+            font-family: 'Jeongmeokbawi';
+            src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/SangSangRockOTF.woff') format('woff');
+            font-weight: normal;
+            font-display: swap;
+        }
+        
         :root { --main: #0e6ddb; --bg: #ffffff; --gray: #444444; }
         body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
@@ -24,6 +31,7 @@
             transition: opacity 0.5s ease;
         }
         #dday-timer { 
+            font-family: 'Jeongmeokbawi', sans-serif; /* 이 폰트만 적용 */
             font-size: 3.5rem; 
             font-weight: 900; 
             color: #fff; 
@@ -67,47 +75,62 @@
             color: var(--gray); font-weight: 700;
         }
         
-/* 1. 컨테이너: 카드 그림자 안 잘리게 하단 여백만 확보 */
+/* 1. 요청하신 정묵바위 폰트 (이건 유지) */
+@font-face {
+    font-family: 'Jeongmeokbawi';
+    src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/SangSangRockOTF.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+#dday-timer { 
+    font-family: 'Jeongmeokbawi', sans-serif;
+    font-size: 3.5rem; 
+    font-weight: 900; 
+    color: #fff; 
+    text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
+}
+
+/* 2. 9시 20분경의 황금 비율 카드 스타일 */
 .swipe-container { 
     width: 100%;
-    padding: 20px 0 50px 0 !important; 
+    padding: 20px 0 40px 0; 
     overflow: hidden; 
 }
 
-/* 2. 슬라이드: 님이 정한 '85% 너비'와 '15px 간격' 강제 고정 */
 .swiper-slide {
-    width: 85% !important; 
+    width: 85% !important; /* 님이 정하신 너비 */
     display: flex;
     justify-content: center;
-    align-items: center; 
     height: auto !important;
-    /* Swiper 내부 spaceBetween 대신 님의 원래 간격(15px)을 직접 제어 */
-    margin: 0 7.5px; 
 }
 
-/* 3. 카드 본체: 님이 초반에 설정한 높이와 패딩 그대로 복구 */
 .prayer-card {
     width: 100%;
-    /* 높이를 억지로 키우지 않고 초반처럼 내용물에 맞게! */
-    min-height: auto !important; 
-    
-    /* --------------------------------------------------------- */
-    /* [복구] 님이 초반에 줬던 그 패딩 수치로 돌려놓으세요! */
-    padding: 35px 25px; 
-    /* --------------------------------------------------------- */
-    
-    border-radius: 25px; 
+    /* 9시 20분 스타일: 억지 높이 없이 패딩으로 잡았던 그 크기 */
+    padding: 30px 22px; 
+    border-radius: 20px; 
     box-sizing: border-box;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+    box-shadow: 0 8px 15px rgba(0,0,0,0.05); 
     display: flex;
     flex-direction: column;
-    text-align: left; /* 초반 설정대로 왼쪽 정렬 (중앙 원하시면 center로) */
+    text-align: left; /* 중앙 아니고 왼쪽 정렬이었죠 */
 }
 
-/* 4. 텍스트 간격 복구 */
-.prayer-card h3 { margin: 0 0 15px 0; font-size: 1.4rem; font-weight: 800; color: #222; }
-.prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
+.prayer-card h3 { 
+    margin: 0 0 15px 0; 
+    font-size: 1.35rem; 
+    color: #222; 
+    font-weight: 800; 
+}
 
+.prayer-card p { 
+    margin: 0; 
+    font-size: 1.05rem; 
+    line-height: 1.7; 
+    color: #555; 
+    word-break: keep-all; 
+}
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
