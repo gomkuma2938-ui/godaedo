@@ -50,12 +50,13 @@
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
         .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
-        /* 소리 버튼 - 님의 레이아웃 방해 안 되게 추가 */
+        /* 소리 버튼 기본 스타일 (OFF 상태) */
         #mute-btn {
             position: absolute; 
             top: 20px; 
             right: 20px; 
             z-index: 20;
+            /* 배경: 검정색 60% 투명도 */
             background: rgba(0, 0, 0, 0.6); 
             color: #fff; 
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -68,14 +69,17 @@
             align-items: center; 
             gap: 6px; 
             line-height: 1;
-            transition: all 0.3s ease; /* 색상 변경 부드럽게 */
+            /* 뒤 배경 블러 처리 (아이폰 감성 추가) */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
         }
         
-        /* ON 상태일 때: 배경 흰색, 글자 검정색 반전 */
+        /* ON 상태일 때: 흰색이지만 60% 투명도로 조절 (포스터가 살짝 비치게) */
         #mute-btn.on {
-            background: #ffffff !important;
+            background: rgba(255, 255, 255, 0.6) !important; /* 100% 흰색 대신 rgba 사용 */
             color: #000000 !important;
-            border: 1px solid #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
         .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
         .prayer-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--gray); font-weight: 700; }
