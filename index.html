@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 청년부 수련회 : 고대도</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root { --main: #3a6186; --text: #333; --bg: #fdfdfd; }
+        body { margin: 0; font-family: 'Pretendard', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
+        
+        /* D-Day Countdown */
+        #dday-container { position: absolute; top: 40px; width: 100%; text-align: center; z-index: 10; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        #dday-timer { font-size: 1.8rem; font-weight: 800; background: rgba(0,0,0,0.3); display: inline-block; padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(5px); }
+
+        /* Poster */
+        .poster { width: 100%; line-height: 0; }
+        .poster img { width: 100%; height: auto; }
+
+        /* Video Section */
+        section { padding: 60px 25px; }
+        h2 { font-size: 1.4rem; text-align: center; margin-bottom: 30px; color: var(--main); }
+        .video-box { position: relative; padding-bottom: 177.77%; height: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+
+        /* Prayer List */
+        .prayer-card { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--main); }
+        .prayer-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
+        .prayer-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="dday-container">
+            <div id="dday-timer">D-Day Loading...</div>
+        </div>
+
+        <div class="poster">
+            <img src="poster.jpg" alt="수련회 포스터">
+        </div>
+
+        <section data-aos="fade-up">
+            <h2>준비하는 우리들의 모습 🎥</h2>
+            <div class="video-box">
+                <iframe id="yt-player" src="https://www.youtube.com/embed/쇼츠ID?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1" frameborder="0"></iframe>
+            </div>
+        </section>
+
+        <section>
+            <h2 data-aos="fade-up">함께 기도로 세워주세요 🙏</h2>
+            
+            <div class="prayer-card" data-aos="fade-up">
+                <h3>1. 하나님과의 인격적인 만남</h3>
+                <p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p>
+            </div>
+            <div class="prayer-card" data-aos="fade-up">
+                <h3>2. 마음의 치유와 영적 회복</h3>
+                <p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p>
+            </div>
+            <div class="prayer-card" data-aos="fade-up">
+                <h3>3. 하나 됨과 사랑의 공동체</h3>
+                <p>청년부가 예수님의 사랑 안에서 하나 되며, 믿음의 동역자를 얻게 하소서.</p>
+            </div>
+            <div class="prayer-card" data-aos="fade-up">
+                <h3>4. 고대도의 영적 유산 계승</h3>
+                <p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p>
+            </div>
+            <div class="prayer-card" data-aos="fade-up">
+                <h3>5. 인도자와 모든 일정의 안전</h3>
+                <p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 40px; color: #ccc; font-size: 0.8rem;">
+            © 2026 청년부 수련회 | 기도로 함께해주셔서 감사합니다.
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
