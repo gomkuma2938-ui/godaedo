@@ -67,19 +67,47 @@
             color: var(--gray); font-weight: 700;
         }
         
-        /* Swiper 전용 설정 */
-        .swipe-container { padding: 10px 0 60px 0; overflow: hidden; }
-        .swiper-slide { display: flex; justify-content: center; height: auto; }
-        
-        .prayer-card {
-            width: 85%; /* Swiper slidesPerView: 'auto' 설정을 위해 필요 */
-            padding: 30px 25px;
-            border-radius: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        .prayer-card h3 { margin: 0 0 15px 0; font-size: 1.3rem; color: #222; font-weight: 800; }
-        .prayer-card p { margin: 0; font-size: 1rem; line-height: 1.7; color: #555; word-break: keep-all; }
+/* 1. 컨테이너: Swiper가 높이를 못 잡을 수 있으니 높이 설정 유지 */
+.swipe-container { 
+    width: 100%;
+    padding: 20px 0 60px 0; /* 상하 여백만 유지 */
+    overflow: hidden; 
+}
+
+/* 2. 슬라이드: 님이 설정했던 카드 사이 간격과 정렬을 Swiper 식으로 보정 */
+.swiper-slide {
+    width: 85% !important; /* 님이 원래 원하셨던 그 너비 그대로 고정 */
+    display: flex;
+    justify-content: center;
+    height: auto;
+}
+
+/* 3. 카드 본체: 님의 원래 디자인 (둥근 모서리, 패딩 등) 복구 */
+.prayer-card {
+    width: 100%; /* 슬라이드 너비를 따라가게 함 */
+    padding: 35px 25px; /* 님의 원래 패딩값으로 조정하세요 */
+    border-radius: 25px; /* 님의 원래 곡률 */
+    box-sizing: border-box;
+    /* 님이 넣으셨던 그림자나 효과가 있다면 여기에 다시 추가 */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+    display: flex;
+    flex-direction: column;
+}
+
+/* 4. 텍스트 디자인 복구 */
+.prayer-card h3 { 
+    margin: 0 0 15px 0; 
+    font-size: 1.4rem; 
+    font-weight: 800; 
+    color: #222; 
+}
+.prayer-card p { 
+    margin: 0; 
+    font-size: 1.05rem; 
+    line-height: 1.8; 
+    color: #555; 
+    word-break: keep-all; 
+}
 
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
