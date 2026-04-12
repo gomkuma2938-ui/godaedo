@@ -37,6 +37,7 @@ function onYouTubeIframeAPIReady() {
         events: { 'onReady': (e) => { e.target.mute(); } }
     });
 }
+
 function toggleMute() {
     const btn = document.getElementById('mute-btn');
     const icon = document.getElementById('mute-icon');
@@ -45,13 +46,13 @@ function toggleMute() {
     if (player.isMuted()) {
         player.unMute();
         icon.innerText = '🔊';
-        text.innerText = 'ON'; // 소리 켜짐 상태
-        btn.style.background = 'rgba(14, 109, 219, 0.8)';
+        text.innerText = 'ON';
+        btn.classList.add('on'); // CSS의 .on 스타일 적용 (흰 배경 / 검정 글씨)
     } else {
         player.mute();
         icon.innerText = '🔈';
-        text.innerText = 'OFF'; // 음소거 상태
-        btn.style.background = 'rgba(0, 0, 0, 0.6)';
+        text.innerText = 'OFF';
+        btn.classList.remove('on'); // 원래 스타일로 복구 (반투명 검정 배경 / 흰 글씨)
     }
 }
 
