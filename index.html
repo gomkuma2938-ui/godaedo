@@ -91,46 +91,35 @@
     text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
 }
 
-/* 2. 9시 20분경의 황금 비율 카드 스타일 */
 .swipe-container { 
     width: 100%;
-    padding: 20px 0 40px 0; 
+    padding: 10px 0 50px 0 !important; /* 위 10px, 아래 50px */
     overflow: hidden; 
 }
 
 .swiper-slide {
-    width: 85% !important; /* 님이 정하신 너비 */
+    width: 85% !important; /* 님이 정한 85% */
     display: flex;
     justify-content: center;
     height: auto !important;
 }
 
-.prayer-card {
+.prayer-card { 
     width: 100%;
-    /* 9시 20분 스타일: 억지 높이 없이 패딩으로 잡았던 그 크기 */
-    padding: 30px 22px; 
-    border-radius: 20px; 
-    box-sizing: border-box;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.05); 
+    border-radius: 30px; /* 님이 주신 수치 */
+    padding: 50px 30px;  /* 님이 주신 수치 */
+    box-sizing: border-box; 
+    min-height: 300px;   /* 님이 주신 수치 */
     display: flex;
     flex-direction: column;
-    text-align: left; /* 중앙 아니고 왼쪽 정렬이었죠 */
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    background-color: #fff;
 }
 
-.prayer-card h3 { 
-    margin: 0 0 15px 0; 
-    font-size: 1.35rem; 
-    color: #222; 
-    font-weight: 800; 
-}
-
-.prayer-card p { 
-    margin: 0; 
-    font-size: 1.05rem; 
-    line-height: 1.7; 
-    color: #555; 
-    word-break: keep-all; 
-}
+.prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
+.prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
