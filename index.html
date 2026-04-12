@@ -75,31 +75,21 @@
         }
         
         .swipe-container { 
-            display: flex; 
-            overflow-x: auto; 
-            scroll-snap-type: x mandatory; 
-            gap: 15px; 
-            /* 아래 패딩을 40px 정도로 넉넉히 주어 그림자가 안 잘리게 함 */
-            padding: 10px 30px 40px 30px; 
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            /* PC 드래그 시 텍스트 선택 방지 */
-            user-select: none; 
+            padding: 10px 0 40px 0; /* 좌우 패딩은 빼주세요 (Swiper가 계산함) */
+            overflow: hidden; /* 스크롤바 강제 제거 */
         }
-        .swipe-container::-webkit-scrollbar { display: none; }
-
-        .prayer-card { 
-            flex: 0 0 85%; 
-            scroll-snap-align: center; 
-            border-radius: 30px; 
-            padding: 50px 30px; 
-            box-sizing: border-box; 
-            min-height: 300px;
+        
+        /* 카드가 찌그러지지 않게 설정 */
+        .swiper-slide {
+            height: auto;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        
+        .prayer-card {
+            /* flex: 0 0 85% 대신 너비를 고정하거나 Swiper 설정으로 제어 */
+            width: 85%; 
+            margin: 0 auto;
         }
         .prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
         .prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
