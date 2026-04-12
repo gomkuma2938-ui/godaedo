@@ -61,7 +61,11 @@
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
         .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
-        .prayer-section { padding: 60px 0 20px 0; overflow: hidden; }
+        .prayer-section { 
+            padding: 60px 0 0 0; /* 아래쪽 패딩을 일단 0으로 */
+            overflow: hidden; 
+            background: #fff; /* 배경색을 확실히 지정 */
+        }
         .prayer-section h2 { 
             font-size: 1.5rem; 
             text-align: center; 
@@ -75,9 +79,12 @@
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
             gap: 15px; 
-            padding: 0 30px 10px 30px;
+            /* 아래 패딩을 40px 정도로 넉넉히 주어 그림자가 안 잘리게 함 */
+            padding: 10px 30px 40px 30px; 
             scrollbar-width: none;
             -ms-overflow-style: none;
+            /* PC 드래그 시 텍스트 선택 방지 */
+            user-select: none; 
         }
         .swipe-container::-webkit-scrollbar { display: none; }
 
@@ -101,7 +108,15 @@
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
 
-        footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; letter-spacing: 1px; }
+        footer { 
+            margin-top: -10px; /* 컨테이너 패딩 때문에 생긴 간격 미세 조정 */
+            text-align: center; 
+            padding: 20px 40px 40px 40px; 
+            color: #ccc; 
+            font-size: 0.8rem; 
+            background: #fff;
+        }        
+
     </style>
 </head>
 <body>
