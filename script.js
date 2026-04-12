@@ -25,19 +25,31 @@ let isDown = false;
 let startX, scrollLeft, velX, momentumID;
 
 if (container) {
-    // 무한 루프 체크
     container.addEventListener('scroll', () => {
         if (isMoving) return;
+        
         const cards = container.querySelectorAll('.prayer-card');
         const cardWidth = cards[0].offsetWidth + 15;
-        if (container.scrollLeft <= 0) {
+        
+        // 1. 왼쪽 끝 도달 시
+        if (container.scrollLeft <= 5) { // 0 대신 여유값 5
             isMoving = true;
+            container.style.scrollSnapType = 'none'; // 자석 일시 해제
             container.scrollLeft = cardWidth * 5;
-            setTimeout(() => isMoving = false, 50);
-        } else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 5)) {
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory'; // 자석 복구
+                isMoving = false;
+            }, 50);
+        } 
+        // 2. 오른쪽 끝 도달 시
+        else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 5)) {
             isMoving = true;
+            container.style.scrollSnapType = 'none'; // 자석 일시 해제
             container.scrollLeft = cardWidth;
-            setTimeout(() => isMoving = false, 50);
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory'; // 자석 복구
+                isMoving = false;
+            }, 50);
         }
     });
 
