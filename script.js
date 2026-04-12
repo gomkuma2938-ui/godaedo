@@ -67,9 +67,25 @@ if (container) {
         e.preventDefault();
         const x = e.pageX - container.offsetLeft;
         const walk = (x - startX) * 2;
-        const prevScrollLeft = container.scrollLeft;
+        const prev = container.scrollLeft;
         container.scrollLeft = scrollLeft - walk;
-        velX = container.scrollLeft - prevScrollLeft; // 속도 계산
+        velX = container.scrollLeft - prev;
+
+        // --- 드래그 중 실시간 무한 루프 체크 추가 ---
+        const cards = container.querySelectorAll('.prayer-card');
+        const cardWidth = cards[0].offsetWidth + 15;
+
+        // 왼쪽 끝으로 드래그할 때
+        if (container.scrollLeft <= 0) {
+            scrollLeft = cardWidth * 5 + (e.pageX - container.offsetLeft - startX); 
+            container.scrollLeft = cardWidth * 5;
+        } 
+        // 오른쪽 끝으로 드래그할 때
+        else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 2)) {
+            scrollLeft = cardWidth + (e.pageX - container.offsetLeft - startX);
+            container.scrollLeft = cardWidth;
+        }
+        // ------------------------------------------
     });
 
     // 부드러운 관성 이동 함수
