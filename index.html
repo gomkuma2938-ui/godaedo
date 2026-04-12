@@ -2,79 +2,121 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 청년부 수련회 : 고대도</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --main: #3a6186; --text: #333; --bg: #fdfdfd; }
-        body { margin: 0; font-family: 'Pretendard', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        :root { --main: #0e6ddb; --bg: #ffffff; }
+        body { margin: 0; font-family: 'Pretendard', sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
         
-        /* D-Day Countdown */
-        #dday-container { position: absolute; top: 40px; width: 100%; text-align: center; z-index: 10; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        #dday-timer { font-size: 1.8rem; font-weight: 800; background: rgba(0,0,0,0.3); display: inline-block; padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(5px); }
+        /* 1. D-Day: 포스터 상단에서 53% 지점, 박스 제거, 특정 색상 그림자 */
+        #dday-container { 
+            position: absolute; 
+            top: 53%; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 10; 
+            pointer-events: none;
+        }
+        #dday-timer { 
+            font-size: 3rem; 
+            font-weight: 900; 
+            color: #fff; 
+            /* 지정하신 그림자 색상 #0e6ddb 적용 */
+            text-shadow: 3px 3px 0px #0e6ddb, 5px 5px 15px rgba(0,0,0,0.2); 
+        }
 
-        /* Poster */
-        .poster { width: 100%; line-height: 0; }
+        /* 2. Poster: 기본 구조 */
+        .poster { width: 100%; position: relative; line-height: 0; }
         .poster img { width: 100%; height: auto; }
 
-        /* Video Section */
-        section { padding: 60px 25px; }
-        h2 { font-size: 1.4rem; text-align: center; margin-bottom: 30px; color: var(--main); }
-        .video-box { position: relative; padding-bottom: 177.77%; height: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+        /* 3. Shorts: 양 옆 공백 없이 너비 100% */
+        .video-section { width: 100%; line-height: 0; background: #000; }
+        .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
+        .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
-        /* Prayer List */
-        .prayer-card { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--main); }
-        .prayer-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
-        .prayer-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: #555; }
+        /* 4. 기도제목: 파스텔톤 스와이프 카드 */
+        .prayer-section { padding: 60px 0; overflow: hidden; }
+        .prayer-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--main); padding: 0 20px; }
+        
+        .swipe-container { 
+            display: flex; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            gap: 15px; 
+            padding: 0 30px 30px 30px;
+            scrollbar-width: none; /* 파이어폭스 */
+        }
+        .swipe-container::-webkit-scrollbar { display: none; } /* 크롬, 사파리 */
+
+        .prayer-card { 
+            flex: 0 0 85%; 
+            scroll-snap-align: center; 
+            border-radius: 25px; 
+            padding: 40px 25px; 
+            box-sizing: border-box; 
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .prayer-card h3 { margin: 0 0 15px 0; font-size: 1.3rem; color: #444; }
+        .prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.7; color: #555; word-break: keep-all; }
+
+        /* 파스텔톤 5가지 색상 */
+        .c1 { background-color: #fce4ec; } /* 핑크 */
+        .c2 { background-color: #e8f5e9; } /* 그린 */
+        .c3 { background-color: #e3f2fd; } /* 블루 */
+        .c4 { background-color: #fff3e0; } /* 오렌지 */
+        .c5 { background-color: #f3e5f5; } /* 퍼플 */
+
+        footer { text-align: center; padding: 40px; color: #bbb; font-size: 0.8rem; }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <div id="dday-container">
-            <div id="dday-timer">D-Day Loading...</div>
-        </div>
-
         <div class="poster">
+            <div id="dday-container">
+                <div id="dday-timer">D-Day</div>
+            </div>
             <img src="poster.png" alt="수련회 포스터">
         </div>
 
-        <section data-aos="fade-up">
-            <h2>준비하는 우리들의 모습 🎥</h2>
+        <div class="video-section">
             <div class="video-box">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/쇼츠ID?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1" frameborder="0"></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/쇼츠ID?enablejsapi=1&mute=1&playlist=쇼츠ID&loop=1&controls=0" frameborder="0"></iframe>
             </div>
-        </section>
+        </div>
 
-        <section>
+        <section class="prayer-section">
             <h2 data-aos="fade-up">함께 기도로 세워주세요 🙏</h2>
-            
-            <div class="prayer-card" data-aos="fade-up">
-                <h3>1. 하나님과의 인격적인 만남</h3>
-                <p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p>
-            </div>
-            <div class="prayer-card" data-aos="fade-up">
-                <h3>2. 마음의 치유와 영적 회복</h3>
-                <p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p>
-            </div>
-            <div class="prayer-card" data-aos="fade-up">
-                <h3>3. 하나 됨과 사랑의 공동체</h3>
-                <p>청년부가 예수님의 사랑 안에서 하나 되며, 믿음의 동역자를 얻게 하소서.</p>
-            </div>
-            <div class="prayer-card" data-aos="fade-up">
-                <h3>4. 고대도의 영적 유산 계승</h3>
-                <p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p>
-            </div>
-            <div class="prayer-card" data-aos="fade-up">
-                <h3>5. 인도자와 모든 일정의 안전</h3>
-                <p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p>
+            <div class="swipe-container">
+                <div class="prayer-card c1" data-aos="fade-right">
+                    <h3>1. 하나님과의 만남</h3>
+                    <p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p>
+                </div>
+                <div class="prayer-card c2" data-aos="fade-right" data-aos-delay="100">
+                    <h3>2. 치유와 영적 회복</h3>
+                    <p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p>
+                </div>
+                <div class="prayer-card c3" data-aos="fade-right" data-aos-delay="200">
+                    <h3>3. 하나 된 공동체</h3>
+                    <p>예수님의 사랑 안에서 청년부가 하나 되며, 믿음의 동역자를 얻게 하소서.</p>
+                </div>
+                <div class="prayer-card c4" data-aos="fade-right" data-aos-delay="300">
+                    <h3>4. 고대도의 영적 유산</h3>
+                    <p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p>
+                </div>
+                <div class="prayer-card c5" data-aos="fade-right" data-aos-delay="400">
+                    <h3>5. 인도자와 안전</h3>
+                    <p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p>
+                </div>
             </div>
         </section>
 
-        <footer style="text-align: center; padding: 40px; color: #ccc; font-size: 0.8rem;">
-            © 2026 청년부 수련회 | 기도로 함께해주셔서 감사합니다.
-        </footer>
+        <footer>© 2026 청년부 수련회</footer>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -1,45 +1,43 @@
-// 1. 수련회 시작 날짜 설정 (YYYY-MM-DD 형식)
-const TARGET_DATE = "2026-04-30"; 
+// 1. 설정
+const TARGET_DATE = "2026-08-15"; // 수련회 날짜
 
-// 2. D-Day 카운트다운 로직
-function updateTimer() {
+// 2. D-Day 계산 (시간 제외, 날짜만)
+function updateDDay() {
     const now = new Date();
     const target = new Date(TARGET_DATE + "T00:00:00");
-    const diff = target - now;
-
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const m = Math.floor((diff / (1000 * 60)) % 60);
-    const s = Math.floor((diff / 1000) % 60);
+    
+    // 날짜 차이 계산
+    const diff = target.getTime() - now.getTime();
+    const dDay = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
     const timerEl = document.getElementById("dday-timer");
-    if (diff > 0) {
-        timerEl.innerText = `D-${d} ${h < 10 ? '0'+h : h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+    
+    if (dDay > 0) {
+        timerEl.innerText = `D-${dDay}`;
+    } else if (dDay === 0) {
+        timerEl.innerText = "D-Day ✨";
     } else {
-        timerEl.innerText = "수련회 진행 중 ✨";
+        timerEl.innerText = "수련회 중";
     }
 }
 
-// 3. 유튜브 자동 재생 (스크롤 감시)
+// 3. 비디오 스크롤 감시 (자동 재생)
 const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         const iframe = document.getElementById('yt-player');
         if (entry.isIntersecting) {
-            // 화면에 보이면 재생
             iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         } else {
-            // 화면 밖으로 나가면 일시정지
             iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         }
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.6 }); // 60% 이상 보일 때 재생
 
-// 초기화
+// 실행
 window.onload = () => {
     AOS.init({ duration: 1000, once: true });
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    updateDDay();
     
-    const videoSection = document.querySelector('.video-box');
-    videoObserver.observe(videoSection);
+    const videoBox = document.querySelector('.video-box');
+    videoObserver.observe(videoBox);
 };
