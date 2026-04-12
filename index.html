@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 청년부 수련회 : 고대도</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <style>
         :root { --main: #0e6ddb; --bg: #ffffff; --gray: #444444; }
         body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
         
+        /* D-Day 컨테이너: 디자인 의도대로 포스터 로드 전까지는 숨김(0) 유지 */
         #dday-container { 
             position: absolute; 
             top: 55%; 
@@ -27,94 +30,72 @@
             text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
         }
 
-        .poster { width: 100%; position: relative; line-height: 0; overflow: hidden; }
+        .poster { width: 100%; position: relative; line-height: 0; overflow: hidden; background-color: var(--main); }
         .poster img { width: 100%; height: auto; }
 
         .scroll-indicator {
-                position: absolute;
-                bottom: 30px; 
-                left: 50%;
-                transform: translateX(-50%);
-                width: 45px;   /* 동그라미 크기 */
-                height: 45px;
-                background-color: rgba(255, 255, 255, 0.9); /* 흰색 배경 (약간 투명) */
-                border-radius: 50%; /* 동그랗게 */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 15;
-                cursor: pointer;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 버튼 입체감 */
-            }
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px; height: 45px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
         
-            /* 내부 화살표: 회색으로 변경 및 정렬 조정 */
-            .arrow-down {
-                width: 10px;
-                height: 10px;
-                border-right: 3px solid #666; /* 진한 회색 */
-                border-bottom: 3px solid #666;
-                transform: rotate(45deg);
-                margin-top: -4px; /* 원 중앙에 맞추기 위한 보정 */
-            }
+        .arrow-down {
+            width: 10px; height: 10px;
+            border-right: 3px solid #666;
+            border-bottom: 3px solid #666;
+            transform: rotate(45deg);
+            margin-top: -4px;
+        }
 
         .video-section { width: 100%; line-height: 0; background: #000; }
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
         .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
-        .prayer-section { 
-            padding: 60px 0 0 0; /* 아래쪽 패딩을 일단 0으로 */
-            overflow: hidden; 
-            background: #fff; /* 배경색을 확실히 지정 */
-        }
+        .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
         .prayer-section h2 { 
-            font-size: 1.5rem; 
-            text-align: center; 
-            margin-bottom: 30px; 
-            color: var(--gray);
-            font-weight: 700;
+            font-size: 1.5rem; text-align: center; margin-bottom: 30px; 
+            color: var(--gray); font-weight: 700;
         }
         
-        .swipe-container { 
-            padding: 10px 0 40px 0; /* 좌우 패딩은 빼주세요 (Swiper가 계산함) */
-            overflow: hidden; /* 스크롤바 강제 제거 */
-        }
-        
-        /* 카드가 찌그러지지 않게 설정 */
-        .swiper-slide {
-            height: auto;
-            display: flex;
-            justify-content: center;
-        }
+        /* Swiper 전용 설정 */
+        .swipe-container { padding: 10px 0 60px 0; overflow: hidden; }
+        .swiper-slide { display: flex; justify-content: center; height: auto; }
         
         .prayer-card {
-            /* flex: 0 0 85% 대신 너비를 고정하거나 Swiper 설정으로 제어 */
-            width: 85%; 
-            margin: 0 auto;
+            width: 85%; /* Swiper slidesPerView: 'auto' 설정을 위해 필요 */
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
-        .prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
-        .prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
+        .prayer-card h3 { margin: 0 0 15px 0; font-size: 1.3rem; color: #222; font-weight: 800; }
+        .prayer-card p { margin: 0; font-size: 1rem; line-height: 1.7; color: #555; word-break: keep-all; }
 
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
 
         footer { 
-            margin-top: -10px; /* 컨테이너 패딩 때문에 생긴 간격 미세 조정 */
-            text-align: center; 
-            padding: 20px 40px 40px 40px; 
-            color: #ccc; 
-            font-size: 0.8rem; 
-            background: #fff;
-        }        
-
+            text-align: center; padding: 20px 40px 40px 40px; 
+            color: #ccc; font-size: 0.8rem; background: #fff;
+        }       
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="poster">
             <div id="dday-container">
-                <div id="dday-timer">D-Day</div>
-            </div>
+                <div id="dday-timer"></div> </div>
             <img src="poster.png" alt="수련회 포스터">
             
             <div class="scroll-indicator" onclick="scrollToVideo()">
@@ -131,20 +112,21 @@
         <section class="prayer-section">
             <h2 data-aos="fade-up">함께 기도해 주세요 🙏</h2>
             <div class="swiper swipe-container" id="swipeContainer">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide prayer-card c5"><h3>인도자와 안전</h3><p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p></div>
-                        <div class="swiper-slide prayer-card c1"><h3>하나님과의 만남</h3><p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p></div>
-                        <div class="swiper-slide prayer-card c2"><h3>치유와 영적 회복</h3><p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p></div>
-                        <div class="swiper-slide prayer-card c3"><h3>하나 된 공동체</h3><p>예수님의 사랑 안에서 청년부가 하나 되며, 믿음의 동역자를 얻게 하소서.</p></div>
-                        <div class="swiper-slide prayer-card c4"><h3>고대도의 영적 유산</h3><p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p></div>
-                    </div>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><div class="prayer-card c5"><h3>인도자와 안전</h3><p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p></div></div>
+                    <div class="swiper-slide"><div class="prayer-card c1"><h3>하나님과의 만남</h3><p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p></div></div>
+                    <div class="swiper-slide"><div class="prayer-card c2"><h3>치유와 영적 회복</h3><p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p></div></div>
+                    <div class="swiper-slide"><div class="prayer-card c3"><h3>하나 된 공동체</h3><p>예수님의 사랑 안에서 청년부가 하나 되며, 믿음의 동역자를 얻게 하소서.</p></div></div>
+                    <div class="swiper-slide"><div class="prayer-card c4"><h3>고대도의 영적 유산</h3><p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p></div></div>
                 </div>
+            </div>
         </section>
 
         <footer>© 2026 부일교회 청년부 춘계 수련회</footer>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
