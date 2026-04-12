@@ -30,46 +30,36 @@ let isMoving = false, isDown = false, startX, scrollLeft, velX, momentumID;
 
 if (container) {
     // 무한 루프 핵심: 복사본을 활용한 위치 재설정
-container.addEventListener('scroll', () => {
-    if (isMoving) return;
-    
+// 스크롤 정지 감지 및 위치 재설정
+container.addEventListener('scrollend', () => {
     const cards = container.querySelectorAll('.prayer-card');
     const cardWidth = cards[0].offsetWidth + 15;
     const maxScroll = container.scrollWidth - container.clientWidth;
 
-    // 1. 오른쪽 끝 처리
+    // 1. 오른쪽 끝(복사본 1번)에 안착했을 때 -> 진짜 1번으로 몰래 이동
     if (container.scrollLeft >= maxScroll - 5) {
-        isMoving = true;
-        container.style.scrollSnapType = 'none';
-        container.style.scrollBehavior = 'auto';
-        
-        // 브라우저가 다음 프레임을 그리기 전에 위치를 먼저 옮김
-        requestAnimationFrame(() => {
-            container.scrollLeft = cardWidth;
-            // 위치 이동 후 아주 짧은 시간 뒤에 스냅 복구
-            setTimeout(() => {
-                container.style.scrollSnapType = 'x mandatory';
-                isMoving = false;
-            }, 60); // 50ms보다 살짝 넉넉히 줘서 안정화
-        });
+        container.style.scrollSnapType = 'none'; // 잠시 자석 끄기
+        container.scrollLeft = cardWidth;        // 진짜 1번 위치로
+        container.style.scrollSnapType = 'x mandatory'; // 다시 자석 켜기
     } 
     
-    // 2. 왼쪽 끝 처리
+    // 2. 왼쪽 끝(복사본 5번)에 안착했을 때 -> 진짜 5번으로 몰래 이동
     else if (container.scrollLeft <= 5) {
-        isMoving = true;
         container.style.scrollSnapType = 'none';
-        container.style.scrollBehavior = 'auto';
-        
-        requestAnimationFrame(() => {
-            container.scrollLeft = cardWidth * 5;
-            setTimeout(() => {
-                container.style.scrollSnapType = 'x mandatory';
-                isMoving = false;
-            }, 60);
-        });
+        container.scrollLeft = cardWidth * 5;     // 진짜 5번 위치로
+        container.style.scrollSnapType = 'x mandatory';
     }
 });
 
+// 만약 브라우저가 scrollend를 지원하지 않는 경우를 대비한 하위 호환 로직 (선택사항)
+let isScrolling;
+container.addEventListener('scroll', () => {
+    window.clearTimeout(isScrolling);
+    isScrolling = setTimeout(() => {
+        // 여기에 위의 scrollend 로직을 동일하게 넣어도 됩니다.
+    }, 100); 
+});
+    
     // 마우스 드래그 (PC 전용)
     container.addEventListener('mousedown', (e) => {
         isDown = true;
@@ -122,11 +112,14 @@ window.onload = () => {
     const videoBox = document.querySelector('.video-box');
     if (videoBox) videoObserver.observe(videoBox);
 
-    const posterImg = document.querySelector('.poster img');
-    if (posterImg && posterImg.complete) document.getElementById('dday-container').style.opacity = 1;
-    else if(posterImg) posterImg.addEventListener('load', () => document.getElementById('dday-container').style.opacity = 1);
+    // [변경] 이미지 완료를 기다리지 말고, 그냥 페이지 열리자마자 숫자를 보여줍니다.
+    // 어차피 텍스트가 이미지보다 훨씬 빨리 뜨기 때문에 사용자 눈엔 포스터 위에 착 붙어서 보입니다.
+    const ddayContainer = document.getElementById('dday-container');
+    if (ddayContainer) {
+        ddayContainer.style.opacity = 1;
+    }
 
-    // 초기 위치를 '진짜 1번' 카드(두 번째 카드)로 설정
+    // 초기 카드 위치 설정
     if (container) {
         const firstCard = container.querySelector('.prayer-card');
         if (firstCard) {
