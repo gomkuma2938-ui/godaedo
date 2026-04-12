@@ -78,6 +78,32 @@
         .c5 { background-color: #f3e5f5; }
 
         footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; letter-spacing: 1px; }
+
+    /* 화살표 섹션 */
+        .scroll-indicator {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff; /* 포스터와 쇼츠 사이를 잇는 흰색 배경 */
+        }
+    
+        .arrow-down {
+            width: 20px;
+            height: 20px;
+            border-right: 3px solid #ccc; /* 화살표 두께와 색상 */
+            border-bottom: 3px solid #ccc;
+            transform: rotate(45deg); /* > 모양을 아래로 돌림 */
+            animation: bounce 1.5s infinite; /* 까닥까닥 움직임 */
+        }
+    
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
+            40% { transform: translateY(-10px) rotate(45deg); }
+            60% { transform: translateY(-5px) rotate(45deg); }
+        }
+        
     </style>
 </head>
 <body>
@@ -86,7 +112,11 @@
             <div id="dday-container">
                 <div id="dday-timer">D-Day</div>
             </div>
-            <img src="poster.png" alt="수련회 포스터">
+            <img src="poster.jpg" alt="수련회 포스터">
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="arrow-down"></div>
         </div>
 
         <div class="video-section">
