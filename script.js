@@ -7,7 +7,7 @@ function updateDDay() {
     const now = new Date();
     const target = new Date(TARGET_DATE + "T00:00:00");
     const diff = target.getTime() - now.getTime();
-    const dDay = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    const dDay = Math.ceil(diff / (1000 * 60 * 60 * 24)); // 님의 원본 Math.ceil 복구
     const timerEl = document.getElementById("dday-timer");
     
     if (timerEl) {
@@ -17,7 +17,7 @@ function updateDDay() {
     }
 }
 
-// 2. 유튜브 자동 재생 Observer
+// 2. 유튜브 자동 재생 Observer (님의 원본 코드)
 const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         const iframe = document.getElementById('yt-player');
@@ -30,7 +30,29 @@ const videoObserver = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.6 });
 
-// 3. 페이지 리소스 로드 후 초기화
+// 2-1. 추가: 소리 토글 함수 (이것만 하단에 추가)
+let player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('yt-player', {
+        events: { 'onReady': (e) => { e.target.mute(); } }
+    });
+}
+function toggleMute() {
+    const btn = document.getElementById('mute-btn');
+    if (player.isMuted()) {
+        player.unMute();
+        document.getElementById('mute-icon').innerText = '🔊';
+        document.getElementById('mute-text').innerText = '소리 끄기';
+        btn.style.background = 'rgba(14, 109, 219, 0.8)';
+    } else {
+        player.mute();
+        document.getElementById('mute-icon').innerText = '🔈';
+        document.getElementById('mute-text').innerText = '소리 켜기';
+        btn.style.background = 'rgba(0, 0, 0, 0.6)';
+    }
+}
+
+// 3. 페이지 리소스 로드 후 초기화 (님의 원본 코드)
 window.onload = () => {
     // AOS 초기화
     AOS.init({ duration: 1000, once: true });
@@ -39,7 +61,7 @@ window.onload = () => {
     const ddayCont = document.getElementById('dday-container');
     if (ddayCont) ddayCont.style.opacity = 1;
 
-    // Swiper 초기화 (무한 루프 & 깜빡임 해결사)
+    // Swiper 초기화 (님의 설정 그대로 복구)
     const swiper = new Swiper('#swipeContainer', {
         loop: true,
         centeredSlides: true,
@@ -49,7 +71,6 @@ window.onload = () => {
         speed: 400,
         touchRatio: 1.2,
         resistance: false,
-        // 가끔 루프 시 복제본 클릭 안되는 버그 방지
         observer: true,
         observeParents: true,
     });
@@ -59,7 +80,7 @@ window.onload = () => {
     if (videoBox) videoObserver.observe(videoBox);
 };
 
-// 4. 스크롤 이동 함수
+// 4. 스크롤 이동 함수 (님의 원본 코드)
 function scrollToVideo() {
     const videoSection = document.querySelector('.video-section');
     if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
