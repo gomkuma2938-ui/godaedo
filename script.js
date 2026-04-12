@@ -1,5 +1,7 @@
 const TARGET_DATE = "2026-04-30"; 
 
+updateDDay();
+
 // 1. D-Day 업데이트
 function updateDDay() {
     const now = new Date();
@@ -35,31 +37,36 @@ container.addEventListener('scroll', () => {
     const cardWidth = cards[0].offsetWidth + 15;
     const maxScroll = container.scrollWidth - container.clientWidth;
 
-    // 1. 오른쪽 끝 처리 (복사본 1번에 도달하면)
-    // 수치를 고정값(* 6) 대신 전체 길이에서 약간의 여유분(5px)을 빼서 체크합니다.
+    // 1. 오른쪽 끝 처리
     if (container.scrollLeft >= maxScroll - 5) {
         isMoving = true;
         container.style.scrollSnapType = 'none';
         container.style.scrollBehavior = 'auto';
-        container.scrollLeft = cardWidth; // 진짜 1번 위치로 점프
         
-        setTimeout(() => {
-            container.style.scrollSnapType = 'x mandatory';
-            isMoving = false;
-        }, 50);
+        // 브라우저가 다음 프레임을 그리기 전에 위치를 먼저 옮김
+        requestAnimationFrame(() => {
+            container.scrollLeft = cardWidth;
+            // 위치 이동 후 아주 짧은 시간 뒤에 스냅 복구
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory';
+                isMoving = false;
+            }, 60); // 50ms보다 살짝 넉넉히 줘서 안정화
+        });
     } 
     
-    // 2. 왼쪽 끝 처리 (복사본 5번에 도달하면)
+    // 2. 왼쪽 끝 처리
     else if (container.scrollLeft <= 5) {
         isMoving = true;
         container.style.scrollSnapType = 'none';
         container.style.scrollBehavior = 'auto';
-        container.scrollLeft = cardWidth * 5; // 진짜 5번 위치로 점프
         
-        setTimeout(() => {
-            container.style.scrollSnapType = 'x mandatory';
-            isMoving = false;
-        }, 50);
+        requestAnimationFrame(() => {
+            container.scrollLeft = cardWidth * 5;
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory';
+                isMoving = false;
+            }, 60);
+        });
     }
 });
 
@@ -111,7 +118,6 @@ function scrollToVideo() {
 
 window.onload = () => {
     AOS.init({ duration: 1000, once: true });
-    updateDDay();
     
     const videoBox = document.querySelector('.video-box');
     if (videoBox) videoObserver.observe(videoBox);
