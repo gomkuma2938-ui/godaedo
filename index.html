@@ -10,38 +10,66 @@
         body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
         
-        /* 1. D-Day: 위치 조정 및 부드러운 페더 그림자 */
+        /* D-Day: 부드러운 페더 그림자 */
         #dday-container { 
             position: absolute; 
-            top: 55%; 
+            top: 53%; 
             width: 100%; 
             text-align: center; 
             z-index: 10; 
             pointer-events: none;
+            opacity: 0; 
+            transition: opacity 0.5s ease;
         }
         #dday-timer { 
             font-size: 3.5rem; 
             font-weight: 900; 
             color: #fff; 
-            /* 부드럽게 퍼지는 그림자 효과 */
             text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
         }
 
-        .poster { width: 100%; position: relative; line-height: 0; }
+        .poster { width: 100%; position: relative; line-height: 0; overflow: hidden; }
+        /* 포스터 이미지 확장자 png 반영 */
         .poster img { width: 100%; height: auto; }
 
-        /* 2. Shorts: 양 옆 공백 없는 너비 100% */
+        /* 화살표 디자인 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+            cursor: pointer;
+        }
+        .arrow-down {
+            width: 20px;
+            height: 20px;
+            border-right: 4px solid #fff; 
+            border-bottom: 4px solid #fff;
+            transform: rotate(45deg);
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
+            40% { transform: translateY(-10px) rotate(45deg); }
+            60% { transform: translateY(-5px) rotate(45deg); }
+        }
+
         .video-section { width: 100%; line-height: 0; background: #000; }
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
         .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
-        /* 3. 기도제목: 무한 루프 스와이프 섹션 */
         .prayer-section { padding: 60px 0 20px 0; overflow: hidden; }
         .prayer-section h2 { 
             font-size: 1.5rem; 
             text-align: center; 
-            margin-bottom: 40px; 
-            color: var(--gray); /* 진한 회색 */
+            margin-bottom: 30px; 
+            color: var(--gray);
             font-weight: 700;
         }
         
@@ -66,77 +94,48 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            text-align: center; /* 가운데 정렬 */
+            text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
         .prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
         .prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
 
-        /* 파스텔톤 카드 색상 */
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
 
         footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; letter-spacing: 1px; }
-
-    /* 화살표 섹션 */
-        .scroll-indicator {
-            cursor: pointer; /* 마우스를 올리면 손가락 모양으로 변경 */
-            width: 100%;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #fff; /* 포스터와 쇼츠 사이를 잇는 흰색 배경 */
-        }
-    
-        .arrow-down {
-            width: 20px;
-            height: 20px;
-            border-right: 3px solid #ccc; /* 화살표 두께와 색상 */
-            border-bottom: 3px solid #ccc;
-            transform: rotate(45deg); /* > 모양을 아래로 돌림 */
-            animation: bounce 1.5s infinite; /* 까닥까닥 움직임 */
-        }
-    
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
-            40% { transform: translateY(-10px) rotate(45deg); }
-            60% { transform: translateY(-5px) rotate(45deg); }
-        }
-
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="poster">
             <div id="dday-container">
-                <div id="dday-timer">D-Day</div>
+                <div id="dday-timer">D-Day Loading...</div>
             </div>
             <img src="poster.png" alt="수련회 포스터">
-        </div>
-        
-        <div class="scroll-indicator" onclick="scrollToVideo()">
-            <div class="arrow-down"></div>
+            
+            <div class="scroll-indicator" onclick="scrollToVideo()">
+                <div class="arrow-down"></div>
+            </div>
         </div>
 
         <div class="video-section">
             <div class="video-box">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/쇼츠ID?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1&controls=0&modestbranding=1" frameborder="0"></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/bufsTtpXIZA?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1&controls=0&modestbranding=1" frameborder="0"></iframe>
             </div>
         </div>
 
         <section class="prayer-section">
             <h2 data-aos="fade-up">함께 기도로 세워주세요 🙏</h2>
-            <div class="swipe-container" id="swipeContainer">
+            
+            <div class="swipe-container" id="swipeContainer" data-aos="fade-in" data-aos-delay="500">
                 <div class="prayer-card c5"><h3>인도자와 안전</h3><p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p></div>
-                
                 <div class="prayer-card c1"><h3>하나님과의 만남</h3><p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p></div>
                 <div class="prayer-card c2"><h3>치유와 영적 회복</h3><p>지친 청년들의 마음이 위로받고, 무너졌던 영성이 뜨겁게 회복되게 하소서.</p></div>
                 <div class="prayer-card c3"><h3>하나 된 공동체</h3><p>예수님의 사랑 안에서 청년부가 하나 되며, 믿음의 동역자를 얻게 하소서.</p></div>
                 <div class="prayer-card c4"><h3>고대도의 영적 유산</h3><p>칼 귀츨라프 선교사의 발자취를 배우며 복음의 소중함을 깨닫고 선교적 삶을 다짐하게 하소서.</p></div>
                 <div class="prayer-card c5"><h3>인도자와 안전</h3><p>인도하시는 담당 목사님께 성령 충만함을 더하시고, 모든 일정의 안전을 지켜주소서.</p></div>
-                
                 <div class="prayer-card c1"><h3>하나님과의 만남</h3><p>모든 청년이 하나님을 개인적으로 깊이 만나고 삶의 목적을 발견하게 하소서.</p></div>
             </div>
         </section>
