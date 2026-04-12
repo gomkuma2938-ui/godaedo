@@ -21,6 +21,12 @@ function updateDDay() {
     }
 }
 
+// 화살표 클릭 시 비디오 섹션으로 부드럽게 이동
+function scrollToVideo() {
+    const videoSection = document.querySelector('.video-section');
+    videoSection.scrollIntoView({ behavior: 'smooth' });
+}
+
 // 3. 비디오 자동 재생 감시
 const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
