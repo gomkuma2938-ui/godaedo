@@ -49,12 +49,23 @@
 
         /* 소리 버튼 - 님의 레이아웃 방해 안 되게 추가 */
         #mute-btn {
-            position: absolute; bottom: 20px; right: 20px; z-index: 20;
-            background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 10px 18px; border-radius: 30px; font-size: 0.9rem; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; line-height: 1;
+            position: absolute; 
+            top: 20px;    /* 하단에서 상단으로 변경 */
+            right: 20px; 
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.6); 
+            color: #fff; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 14px; /* 문구가 짧아져서 패딩 살짝 조절 */
+            border-radius: 30px; 
+            font-size: 0.85rem; 
+            font-weight: bold;
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            line-height: 1;
         }
-
         .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
         .prayer-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--gray); font-weight: 700; }
         
@@ -88,7 +99,7 @@
                 <iframe id="yt-player" src="https://www.youtube.com/embed/bufsTtpXIZA?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1&controls=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
             </div>
             <button id="mute-btn" onclick="toggleMute()">
-                <span id="mute-icon">🔈</span> <span id="mute-text">소리 켜기</span>
+                <span id="mute-icon">🔈</span> <span id="mute-text">OFF</span>
             </button>
         </div>
 
