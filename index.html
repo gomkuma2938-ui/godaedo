@@ -50,13 +50,13 @@
         /* 소리 버튼 - 님의 레이아웃 방해 안 되게 추가 */
         #mute-btn {
             position: absolute; 
-            top: 20px;    /* 하단에서 상단으로 변경 */
+            top: 20px; 
             right: 20px; 
             z-index: 20;
             background: rgba(0, 0, 0, 0.6); 
             color: #fff; 
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 8px 14px; /* 문구가 짧아져서 패딩 살짝 조절 */
+            padding: 8px 14px; 
             border-radius: 30px; 
             font-size: 0.85rem; 
             font-weight: bold;
@@ -65,6 +65,14 @@
             align-items: center; 
             gap: 6px; 
             line-height: 1;
+            transition: all 0.3s ease; /* 색상 변경 부드럽게 */
+        }
+        
+        /* ON 상태일 때: 배경 흰색, 글자 검정색 반전 */
+        #mute-btn.on {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 1px solid #ffffff;
         }
         .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
         .prayer-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--gray); font-weight: 700; }
