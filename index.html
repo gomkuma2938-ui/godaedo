@@ -30,29 +30,32 @@
         .poster { width: 100%; position: relative; line-height: 0; overflow: hidden; }
         .poster img { width: 100%; height: auto; }
 
-        /* 화살표: 애니메이션 제거 및 진한 그림자 추가 */
         .scroll-indicator {
-            position: absolute;
-            bottom: 30px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 15;
-            cursor: pointer;
-        }
-        .arrow-down {
-            width: 20px;
-            height: 20px;
-            border-right: 4px solid #fff; 
-            border-bottom: 4px solid #fff;
-            transform: rotate(45deg);
-            /* 움직이는 애니메이션 줄 삭제됨 */
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6)); /* 가독성을 위한 진한 그림자 */
-        }
+                position: absolute;
+                bottom: 30px; 
+                left: 50%;
+                transform: translateX(-50%);
+                width: 45px;   /* 동그라미 크기 */
+                height: 45px;
+                background-color: rgba(255, 255, 255, 0.9); /* 흰색 배경 (약간 투명) */
+                border-radius: 50%; /* 동그랗게 */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 15;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 버튼 입체감 */
+            }
+        
+            /* 내부 화살표: 회색으로 변경 및 정렬 조정 */
+            .arrow-down {
+                width: 10px;
+                height: 10px;
+                border-right: 3px solid #666; /* 진한 회색 */
+                border-bottom: 3px solid #666;
+                transform: rotate(45deg);
+                margin-top: -4px; /* 원 중앙에 맞추기 위한 보정 */
+            }
 
         .video-section { width: 100%; line-height: 0; background: #000; }
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
