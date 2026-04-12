@@ -8,21 +8,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
+        /* [폰트] 정묵바위 추가 (박제) */
         @font-face {
             font-family: 'Jeongmeokbawi';
             src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/SangSangRockOTF.woff') format('woff');
             font-weight: normal;
             font-display: swap;
         }
-        
+
         :root { --main: #0e6ddb; --bg: #ffffff; --gray: #444444; }
         body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
         
-        /* D-Day 컨테이너: 디자인 의도대로 포스터 로드 전까지는 숨김(0) 유지 */
+        /* [디데이] 폰트 적용 (박제) */
         #dday-container { 
             position: absolute; 
-            top: 55%; 
+            top: 53%; 
             width: 100%; 
             text-align: center; 
             z-index: 10; 
@@ -31,7 +32,7 @@
             transition: opacity 0.5s ease;
         }
         #dday-timer { 
-            font-family: 'Jeongmeokbawi', sans-serif; /* 이 폰트만 적용 */
+            font-family: 'Jeongmeokbawi', sans-serif;
             font-size: 3.5rem; 
             font-weight: 900; 
             color: #fff; 
@@ -65,61 +66,78 @@
             margin-top: -4px;
         }
 
-        .video-section { width: 100%; line-height: 0; background: #000; }
+        /* [쇼츠] 소리 버튼 디자인 추가 */
+        .video-section { width: 100%; line-height: 0; background: #000; position: relative; }
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
-        .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
+        .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; pointer-events: none; } /* 클릭 방지 */
 
+        #mute-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        #mute-btn:hover { background: rgba(0, 0, 0, 0.8); transform: scale(1.05); }
+
+        /* [카드] 9시 20분 스타일 100% 박제 */
         .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
         .prayer-section h2 { 
             font-size: 1.5rem; text-align: center; margin-bottom: 30px; 
             color: var(--gray); font-weight: 700;
         }
         
-/* 1. 요청하신 정묵바위 폰트 (이건 유지) */
-@font-face {
-    font-family: 'Jeongmeokbawi';
-    src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/SangSangRockOTF.woff') format('woff');
-    font-weight: normal;
-    font-display: swap;
-}
+        .swipe-container { 
+            width: 100%;
+            padding: 10px 0 50px 0 !important; 
+            overflow: hidden; 
+        }
 
-#dday-timer { 
-    font-family: 'Jeongmeokbawi', sans-serif;
-    font-size: 3.5rem; 
-    font-weight: 900; 
-    color: #fff; 
-    text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
-}
+        .swiper-slide {
+            width: 85% !important; 
+            display: flex;
+            justify-content: center;
+            height: auto !important;
+        }
 
-.swipe-container { 
-    width: 100%;
-    padding: 10px 0 50px 0 !important; /* 위 10px, 아래 50px */
-    overflow: hidden; 
-}
+        .prayer-card {
+            width: 100%;
+            border-radius: 30px; /* 원본 그대로 */
+            padding: 50px 30px;  /* 원본 그대로 */
+            box-sizing: border-box; 
+            min-height: 300px;   /* 원본 그대로 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
 
-.swiper-slide {
-    width: 85% !important; /* 님이 정한 85% */
-    display: flex;
-    justify-content: center;
-    height: auto !important;
-}
+        .prayer-card h3 { 
+            margin: 0 0 20px 0; 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            color: #222; 
+        }
+        .prayer-card p { 
+            margin: 0; 
+            font-size: 1.05rem; 
+            line-height: 1.8; 
+            color: #555; 
+            word-break: keep-all; 
+        }
 
-.prayer-card { 
-    width: 100%;
-    border-radius: 30px; /* 님이 주신 수치 */
-    padding: 50px 30px;  /* 님이 주신 수치 */
-    box-sizing: border-box; 
-    min-height: 300px;   /* 님이 주신 수치 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    background-color: #fff;
-}
-
-.prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
-.prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
         .c5 { background-color: #f3e5f5; }
@@ -144,8 +162,11 @@
 
         <div class="video-section">
             <div class="video-box">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/bufsTtpXIZA?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1&controls=0&modestbranding=1" frameborder="0"></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/bufsTtpXIZA?enablejsapi=1&mute=1&playlist=bufsTtpXIZA&loop=1&controls=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
+            <button id="mute-btn" onclick="toggleMute()">
+                <span id="mute-icon">🔈</span> <span id="mute-text">소리 켜기</span>
+            </button>
         </div>
 
         <section class="prayer-section">
@@ -164,6 +185,7 @@
         <footer>© 2026 부일교회 청년부 춘계 수련회</footer>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
