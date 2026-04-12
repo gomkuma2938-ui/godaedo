@@ -28,25 +28,37 @@ let isMoving = false, isDown = false, startX, scrollLeft, velX, momentumID;
 
 if (container) {
     // 무한 루프 핵심: 복사본을 활용한 위치 재설정
-    container.addEventListener('scroll', () => {
+container.addEventListener('scroll', () => {
         if (isMoving) return;
         
         const cards = container.querySelectorAll('.prayer-card');
         const cardWidth = cards[0].offsetWidth + 15;
 
-        // 오른쪽 끝(복사본 1번) 도달 시 -> 진짜 1번으로 워프
+        // 1. 오른쪽 끝(복사본 1번) 도달 시
         if (container.scrollLeft >= cardWidth * 6) {
             isMoving = true;
-            container.style.scrollBehavior = 'auto'; 
-            container.scrollLeft = cardWidth;
-            setTimeout(() => { isMoving = false; }, 50);
+            container.style.scrollSnapType = 'none'; // 스냅 강제 종료
+            container.style.scrollBehavior = 'auto'; // 애니메이션 제거
+            container.scrollLeft = cardWidth;        // 진짜 1번으로 점프
+            
+            // 브라우저가 위치를 잡을 시간을 준 뒤 스냅 재활성화
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory';
+                isMoving = false;
+            }, 30); 
         } 
-        // 왼쪽 끝(복사본 5번) 도달 시 -> 진짜 5번으로 워프
+        
+        // 2. 왼쪽 끝(복사본 5번) 도달 시
         else if (container.scrollLeft <= 0) {
             isMoving = true;
+            container.style.scrollSnapType = 'none';
             container.style.scrollBehavior = 'auto';
-            container.scrollLeft = cardWidth * 5;
-            setTimeout(() => { isMoving = false; }, 50);
+            container.scrollLeft = cardWidth * 5;     // 진짜 5번으로 점프
+            
+            setTimeout(() => {
+                container.style.scrollSnapType = 'x mandatory';
+                isMoving = false;
+            }, 30);
         }
     });
 
