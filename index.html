@@ -6,9 +6,8 @@
     <title>2026 청년부 수련회 : 고대도</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    
     <style>
-        /* [폰트] 정묵바위 추가 */
+        /* [폰트] 정묵바위 */
         @font-face {
             font-family: 'Jeongmeokbawi';
             src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/SangSangRockOTF.woff') format('woff');
@@ -21,20 +20,12 @@
         .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
         
         #dday-container { 
-            position: absolute; 
-            top: 53%; 
-            width: 100%; 
-            text-align: center; 
-            z-index: 10; 
-            pointer-events: none;
-            opacity: 0; 
-            transition: opacity 0.5s ease;
+            position: absolute; top: 53%; width: 100%; text-align: center; 
+            z-index: 10; pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
         }
         #dday-timer { 
             font-family: 'Jeongmeokbawi', sans-serif;
-            font-size: 3.5rem; 
-            font-weight: 900; 
-            color: #fff; 
+            font-size: 3.5rem; font-weight: 900; color: #fff; 
             text-shadow: 0 0 15px rgba(14, 109, 219, 0.8), 0 0 30px rgba(14, 109, 219, 0.4); 
         }
 
@@ -42,80 +33,45 @@
         .poster img { width: 100%; height: auto; }
 
         .scroll-indicator {
-            position: absolute;
-            bottom: 30px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 45px; height: 45px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 15;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 45px; height: 45px; background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            z-index: 15; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        
         .arrow-down {
-            width: 10px; height: 10px;
-            border-right: 3px solid #666;
-            border-bottom: 3px solid #666;
-            transform: rotate(45deg);
-            margin-top: -4px;
+            width: 10px; height: 10px; border-right: 3px solid #666; border-bottom: 3px solid #666;
+            transform: rotate(45deg); margin-top: -4px;
         }
 
-        /* [비디오 섹션] 버튼 추가 */
         .video-section { width: 100%; line-height: 0; background: #000; position: relative; }
         .video-box { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; }
         .video-box iframe { position: absolute; top:0; left:0; width:100%; height:100%; border: none; }
 
+        /* 소리 버튼 전용 스타일 */
         #mute-btn {
             position: absolute; bottom: 20px; right: 20px; z-index: 20;
             background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4);
             padding: 10px 18px; border-radius: 30px; font-size: 0.9rem; cursor: pointer;
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 8px; line-height: 1;
         }
 
-        /* [기도 제목] 9시 20분 님의 수치 그대로 */
         .prayer-section { padding: 60px 0 0 0; overflow: hidden; background: #fff; }
-        .prayer-section h2 { 
-            font-size: 1.5rem; text-align: center; margin-bottom: 30px; 
-            color: var(--gray); font-weight: 700;
-        }
+        .prayer-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--gray); font-weight: 700; }
         
-        .swipe-container { 
-            width: 100%;
-            padding: 10px 30px 50px 30px !important; 
-            overflow: hidden; 
-        }
+        .swipe-container { width: 100%; padding: 10px 0 50px 0 !important; overflow: hidden; }
+        .swiper-slide { width: 85% !important; display: flex; justify-content: center; height: auto !important; }
 
-        .swiper-slide {
-            width: 85% !important; 
-            display: flex;
-            justify-content: center;
-            height: auto !important;
-        }
-
+        /* 9시 20분 카드 수치 100% 박제 */
         .prayer-card { 
-            width: 100%;
-            border-radius: 30px; /* 9시 20분 수치 */
-            padding: 50px 30px;  /* 9시 20분 수치 */
-            box-sizing: border-box; 
-            min-height: 300px;   /* 9시 20분 수치 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            background-color: #fff;
+            width: 100%; border-radius: 30px; padding: 50px 30px; box-sizing: border-box; 
+            min-height: 300px; display: flex; flex-direction: column; justify-content: center;
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); background-color: #fff;
         }
         .prayer-card h3 { margin: 0 0 20px 0; font-size: 1.4rem; color: #222; font-weight: 800; }
         .prayer-card p { margin: 0; font-size: 1.05rem; line-height: 1.8; color: #555; word-break: keep-all; }
 
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } 
-        .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } 
-        .c5 { background-color: #f3e5f5; }
+        .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } .c5 { background-color: #f3e5f5; }
 
         footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; background: #fff; }       
     </style>
@@ -156,48 +112,6 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        // 1. Swiper
-        const swiper = new Swiper('#swipeContainer', {
-            loop: true, centeredSlides: true, slidesPerView: 'auto', spaceBetween: 15, grabCursor: true
-        });
-
-        // 2. YouTube API
-        let player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                events: { 'onReady': (e) => { e.target.mute(); e.target.playVideo(); } }
-            });
-        }
-        function toggleMute() {
-            const btn = document.getElementById('mute-btn');
-            if (player.isMuted()) {
-                player.unMute();
-                document.getElementById('mute-icon').innerText = '🔊';
-                document.getElementById('mute-text').innerText = '소리 끄기';
-                btn.style.background = 'rgba(14, 109, 219, 0.8)';
-            } else {
-                player.mute();
-                document.getElementById('mute-icon').innerText = '🔈';
-                document.getElementById('mute-text').innerText = '소리 켜기';
-                btn.style.background = 'rgba(0, 0, 0, 0.6)';
-            }
-        }
-
-        // 3. AOS & D-Day (수정 없이 복구)
-        AOS.init({ duration: 1000, once: true });
-        function scrollToVideo() { document.querySelector('.video-section').scrollIntoView({ behavior: 'smooth' }); }
-        
-        function updateDday() {
-            const target = new Date('July 20, 2026 00:00:00').getTime();
-            const now = new Date().getTime();
-            const dist = target - now;
-            const days = Math.floor(dist / (1000 * 60 * 60 * 24));
-            const timer = document.getElementById('dday-timer');
-            timer.innerText = dist < 0 ? "D-Day" : "D-" + days;
-            document.getElementById('dday-container').style.opacity = 1;
-        }
-        window.onload = updateDday;
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
