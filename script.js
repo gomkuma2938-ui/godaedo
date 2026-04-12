@@ -30,31 +30,59 @@ const videoObserver = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.6 });
 
-// 4. 무한 스와이프 로직 (오른쪽 스크롤 수정)
+// 4. 무한 스와이프 및 드래그 로직
 const container = document.getElementById('swipeContainer');
 let isMoving = false;
+let isDown = false;
+let startX;
+let scrollLeft;
 
 if (container) {
+    // 무한 루프 체크 로직
     container.addEventListener('scroll', () => {
         if (isMoving) return;
         
         const cards = container.querySelectorAll('.prayer-card');
-        const cardWidth = cards[0].offsetWidth + 15; // 카드너비 + gap
+        const cardWidth = cards[0].offsetWidth + 15;
         
-        // 왼쪽 끝(복제본)에 도달하면 실제 마지막으로 이동
         if (container.scrollLeft <= 0) {
             isMoving = true;
             container.scrollLeft = cardWidth * 5;
             setTimeout(() => { isMoving = false; }, 50);
         } 
-        // 오른쪽 끝(복제본)에 도달하면 실제 첫 번째로 이동
-        // scrollLeft가 (전체너비 - 보여지는너비)에 거의 도달했을 때를 체크
         else if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 5)) {
             isMoving = true;
             container.scrollLeft = cardWidth;
             setTimeout(() => { isMoving = false; }, 50);
         }
     });
+
+    // --- PC 마우스 드래그 기능 추가 ---
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.style.cursor = 'grabbing';
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        isDown = false;
+        container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mouseup', () => {
+        isDown = false;
+        container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; // 드래그 속도 조절 (2배속)
+        container.scrollLeft = scrollLeft - walk;
+    });
+    // --------------------------------
 }
 
 // 5. 화살표 클릭 시 비디오 섹션으로 이동
@@ -81,7 +109,7 @@ window.onload = () => {
 
     if (container) {
         const cardWidth = container.querySelector('.prayer-card').offsetWidth + 15;
-        // 초기 위치를 실제 1번 카드로 설정
         container.scrollLeft = cardWidth;
+        container.style.cursor = 'grab'; // 기본 커서 모양 변경
     }
 };
