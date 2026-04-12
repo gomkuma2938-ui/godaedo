@@ -39,15 +39,18 @@ function onYouTubeIframeAPIReady() {
 }
 function toggleMute() {
     const btn = document.getElementById('mute-btn');
+    const icon = document.getElementById('mute-icon');
+    const text = document.getElementById('mute-text');
+
     if (player.isMuted()) {
         player.unMute();
-        document.getElementById('mute-icon').innerText = '🔊';
-        document.getElementById('mute-text').innerText = '소리 끄기';
+        icon.innerText = '🔊';
+        text.innerText = 'ON'; // 소리 켜짐 상태
         btn.style.background = 'rgba(14, 109, 219, 0.8)';
     } else {
         player.mute();
-        document.getElementById('mute-icon').innerText = '🔈';
-        document.getElementById('mute-text').innerText = '소리 켜기';
+        icon.innerText = '🔈';
+        text.innerText = 'OFF'; // 음소거 상태
         btn.style.background = 'rgba(0, 0, 0, 0.6)';
     }
 }
