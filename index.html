@@ -67,45 +67,52 @@
             color: var(--gray); font-weight: 700;
         }
         
-/* 1. 컨테이너: Swiper가 높이를 못 잡을 수 있으니 높이 설정 유지 */
+/* 1. 컨테이너 여백 확보 */
 .swipe-container { 
     width: 100%;
-    padding: 20px 0 60px 0; /* 상하 여백만 유지 */
+    padding: 40px 0 80px 0; /* 카드 그림자와 높이를 위해 상하 여백을 충분히 줍니다 */
     overflow: hidden; 
 }
 
-/* 2. 슬라이드: 님이 설정했던 카드 사이 간격과 정렬을 Swiper 식으로 보정 */
+/* 2. 슬라이드: 카드를 감싸는 틀 (여기서 크기/정렬 결정) */
 .swiper-slide {
-    width: 85% !important; /* 님이 원래 원하셨던 그 너비 그대로 고정 */
+    width: 85% !important; /* 원래 기획하신 너비 85% 복구 */
     display: flex;
     justify-content: center;
-    height: auto;
+    align-items: center;  /* 세로 중앙 정렬 */
+    height: auto !important;
 }
 
-/* 3. 카드 본체: 님의 원래 디자인 (둥근 모서리, 패딩 등) 복구 */
+/* 3. 카드 본체: 님의 원래 디자인 (높이와 패딩) */
 .prayer-card {
-    width: 100%; /* 슬라이드 너비를 따라가게 함 */
-    padding: 35px 25px; /* 님의 원래 패딩값으로 조정하세요 */
-    border-radius: 25px; /* 님의 원래 곡률 */
+    width: 100%;
+    /* --------------------------------------------------------- */
+    /* [핵심] 여기서 높이를 조절하세요. 원래 크셨다고 하니 수치를 키웠습니다 */
+    min-height: 400px; 
+    /* --------------------------------------------------------- */
+    padding: 45px 30px; /* 넉넉한 패딩 복구 */
+    border-radius: 30px; /* 둥글둥글한 느낌 살리기 */
     box-sizing: border-box;
-    /* 님이 넣으셨던 그림자나 효과가 있다면 여기에 다시 추가 */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08); /* 더 깊이감 있는 그림자 */
     display: flex;
     flex-direction: column;
+    justify-content: center; /* 카드 내부 텍스트도 세로 중앙 정렬 */
+    text-align: center; /* 텍스트 가로 중앙 정렬 */
 }
 
-/* 4. 텍스트 디자인 복구 */
+/* 4. 카드 내부 텍스트 정교화 */
 .prayer-card h3 { 
-    margin: 0 0 15px 0; 
-    font-size: 1.4rem; 
+    margin: 0 0 25px 0; 
+    font-size: 1.6rem; 
     font-weight: 800; 
     color: #222; 
+    word-break: keep-all;
 }
 .prayer-card p { 
     margin: 0; 
-    font-size: 1.05rem; 
+    font-size: 1.15rem; 
     line-height: 1.8; 
-    color: #555; 
+    color: #444; 
     word-break: keep-all; 
 }
 
