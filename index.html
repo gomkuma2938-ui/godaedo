@@ -20,7 +20,26 @@
 
         :root { --main: #0e6ddb; --bg: #ffffff; --gray: #444444; }
         body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
-        .wrapper { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; }
+        /* 기존 wrapper 수정 */
+        .wrapper { 
+            width: 100%; /* 기본적으로 넓게 */
+            max-width: 480px; 
+            margin: 0 auto; 
+            background: #fff; 
+            min-height: 100vh; 
+            position: relative; 
+        }
+        
+        /* 모바일 가로 모드 대응 (Landscape) */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            .wrapper {
+                max-width: 100%; /* 가로로 돌리면 480px 제한을 풀고 꽉 채움 */
+            }
+            .poster img {
+                height: auto;
+                max-height: none; /* 가로 모드에서 이미지가 잘리지 않게 조정 */
+            }
+        }
         
         #dday-container { 
             position: absolute; top: 55%; width: 100%; text-align: center; 
