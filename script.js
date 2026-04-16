@@ -5,13 +5,25 @@ updateDDay();
 function updateDDay() {
     const now = new Date();
     const target = new Date(TARGET_DATE + "T00:00:00");
+    
+    // 종료 기준일: 5월 3일 00:00:00 (이때부터 사라짐)
+    const expiryDate = new Date("2026-05-03T00:00:00");
+    
     const diff = target.getTime() - now.getTime();
     const dDay = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    
     const timerEl = document.getElementById("dday-timer");
-    if (timerEl) {
-        if (dDay > 0) timerEl.innerText = `D-${dDay}`;
-        else if (dDay === 0) timerEl.innerText = "D-Day ✨";
-        else timerEl.innerText = "진행 중";
+    if (!timerEl) return;
+
+    if (now >= expiryDate) {
+        // 1. 5월 3일부터는 아무것도 표시 안 함
+        timerEl.innerText = ""; 
+    } else if (dDay > 0) {
+        // 2. 4월 30일 이전까지는 D-1, D-2... 표시
+        timerEl.innerText = `D-${dDay}`;
+    } else {
+        // 3. 4월 30일, 5월 1일, 5월 2일 모두 "D-Day ✨"로 표시
+        timerEl.innerText = "D-Day ✨";
     }
 }
 
