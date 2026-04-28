@@ -91,7 +91,7 @@ function markPastEvents() {
     const hour = now.getHours();
 
     // 목=4월30일, 금=5월1일, 토=5월2일
-    const dayMap = { 1: 0, 2: 1, 6: 2 }; // 요일 → 컬럼 인덱스
+    const dayMap = { 4: 0, 5: 1, 6: 2 }; // 요일 → 컬럼 인덱스
     const columns = document.querySelectorAll('.data-column');
 
     columns.forEach((col, colIndex) => {
