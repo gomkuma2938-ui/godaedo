@@ -120,35 +120,61 @@ markPastEvents();
 // 이미지 핀치줌
 document.querySelectorAll('details img').forEach(img => {
     let startDist = 0, startScale = 1, currentScale = 1;
+    let translateX = 0, translateY = 0;
+    let startX = 0, startY = 0;
+    let lastTranslateX = 0, lastTranslateY = 0;
+    let isPinching = false;
 
+    function applyTransform() {
+        img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    // 핀치줌
     img.addEventListener('touchstart', e => {
         if (e.touches.length === 2) {
+            isPinching = true;
             startDist = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
                 e.touches[0].clientY - e.touches[1].clientY
             );
             startScale = currentScale;
+        } else if (e.touches.length === 1 && currentScale > 1) {
+            startX = e.touches[0].clientX - lastTranslateX;
+            startY = e.touches[0].clientY - lastTranslateY;
         }
     });
 
     img.addEventListener('touchmove', e => {
+        e.preventDefault();
         if (e.touches.length === 2) {
-            e.preventDefault();
             const dist = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
                 e.touches[0].clientY - e.touches[1].clientY
             );
             currentScale = Math.min(Math.max(startScale * (dist / startDist), 1), 4);
-            img.style.transform = `scale(${currentScale})`;
-            img.style.transition = 'none';
+            applyTransform();
+        } else if (e.touches.length === 1 && currentScale > 1 && !isPinching) {
+            translateX = e.touches[0].clientX - startX;
+            translateY = e.touches[0].clientY - startY;
+            applyTransform();
         }
     }, { passive: false });
 
     img.addEventListener('touchend', e => {
-        if (e.touches.length < 2 && currentScale < 1.05) {
+        if (e.touches.length < 2) {
+            isPinching = false;
+            lastTranslateX = translateX;
+            lastTranslateY = translateY;
+        }
+        if (e.touches.length === 0 && currentScale < 1.05) {
             currentScale = 1;
-            img.style.transform = 'scale(1)';
+            translateX = 0;
+            translateY = 0;
+            lastTranslateX = 0;
+            lastTranslateY = 0;
             img.style.transition = 'transform 0.3s ease';
+            applyTransform();
+            setTimeout(() => img.style.transition = '', 300);
         }
     });
 });
