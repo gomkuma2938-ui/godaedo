@@ -117,7 +117,97 @@
         .c1 { background-color: #fce4ec; } .c2 { background-color: #e8f5e9; } .c6 { background-color: #f3dcff; }
         .c3 { background-color: #e3f2fd; } .c4 { background-color: #fff3e0; } .c5 { background-color: #fff9c4; }
 
-        footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; background: #fff; }       
+        footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; background: #fff; }  
+
+        :root {
+  --border-color: #ccc;
+  --header-bg: #f4f4f4;
+  --slot-height: 40px; /* 시간 칸 높이 통일 */
+}
+
+.schedule-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  font-size: 13px;
+}
+
+/* 시간 열 고정 */
+.time-col {
+  width: 50px;
+  flex-shrink: 0;
+  background-color: var(--header-bg);
+  border-right: 1px solid var(--border-color);
+  text-align: center;
+  z-index: 10;
+}
+
+.time-header {
+  height: 60px; /* 날짜 헤더 높이와 일치 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  color: white;
+  font-weight: bold;
+}
+
+.time-slot {
+  height: var(--slot-height);
+  line-height: var(--slot-height);
+  border-bottom: 0.5px solid #eee;
+}
+
+/* 데이터 영역 가로 스크롤 */
+.data-wrapper {
+  flex-grow: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+}
+
+.data-scroll-area {
+  display: flex;
+  width: max-content; /* 내용에 맞춰 너비 확장 */
+}
+
+.day-column {
+  width: 150px; /* 모바일에서 한 눈에 보일 너비 */
+  border-right: 1px solid var(--border-color);
+}
+
+.day-header {
+  height: 60px;
+  background: #4a90e2;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 5px;
+}
+
+.event-item {
+  height: var(--slot-height);
+  border-bottom: 0.5px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+/* 색상 테마 (이미지 참고) */
+.blue { background-color: #e3f2fd; }
+.yellow { background-color: #fff9c4; }
+.orange { background-color: #ffe0b2; color: #e65100; }
+.brown { background-color: #d7ccc8; }
+.green { background-color: #c8e6c9; }
+.mint { background-color: #b2dfdb; }
+.grey { background-color: #f5f5f5; }
+.dark-grey { background-color: #e0e0e0; }
     </style>
 </head>
 <body>
