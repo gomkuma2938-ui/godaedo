@@ -237,11 +237,23 @@
     margin-right: calc(100vw - var(--time-width) - var(--day-width));
 }
 
-/* 이미지 핀치줌 */
-details img {
-    transform-origin: center center;
-    display: block;
+/* 이미지 모달 확 */
+.img-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
     touch-action: none;
+}
+.img-modal.active { display: flex; }
+.img-modal img {
+    max-width: 100%;
+    max-height: 100%;
+    transform-origin: center center;
 }
         
     </style>
@@ -295,11 +307,13 @@ details img {
 
         <div style="overflow: hidden; border-radius: 12px; margin-bottom: 12px;">
             <img src="map1.jpg" 
-                 style="width: 100%;">
+                 style="width: 100%; border-radius: 12px; cursor: pointer;"
+                 onclick="openModal(this.src)">
         </div>
         <div style="overflow: hidden; border-radius: 12px; margin-bottom: 24px;">
             <img src="map2.jpg" 
-                 style="width: 100%; border-radius: 12px;">
+                 style="width: 100%; border-radius: 12px; cursor: pointer;"
+                 onclick="openModal(this.src)">
         </div>
         
         <p style="font-size: 0.95rem; color: #555; line-height: 1.9; margin: 0; word-break: keep-all;">
@@ -395,7 +409,9 @@ details img {
   </div>
 </div>
     
-
+<div class="img-modal" id="imgModal">
+    <img id="modalImg" src="">
+</div>
         <footer>© 2026 부일교회 청년부 춘계 수련회</footer>
     </div>
 
