@@ -152,12 +152,15 @@
         position: relative;
     }
 
-    /* [핵심] 상단 날짜 헤더 고정 */
-    .sticky-header-row {
-        display: flex;
-        position: sticky;
-        top: 0; /* 세로 스크롤 시 상단 고정 */
-        z-index: 100;
+    /* 헤더 동기화용 컨테이너 */
+    .header-scroll-sync {
+      overflow: hidden; /* 스크롤바 숨김, JS로만 제어 */
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--main-blue);
+      display: flex;
+      width: 100%;
     }
 
     /* 왼쪽 위 '시간' 칸 - 가장 높은 우선순위 */
