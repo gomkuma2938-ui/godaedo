@@ -259,19 +259,25 @@
         </div>
 
 <div class="schedule-root">
-    <div class="horizontal-scroll">
-        <div class="table-body">
-            
-            <div style="display: flex; flex-direction: column;">
-                
-                <div class="sticky-header-row">
-                    <div class="top-left-corner">시간</div>
-                    <div class="day-header-item"><span>4월 30일</span><span>목요일</span></div>
-                    <div class="day-header-item"><span>5월 1일</span><span>금요일</span></div>
-                    <div class="day-header-item"><span>5월 2일</span><span>토요일</span></div>
-                </div>
 
-                <div style="display: flex;">
+  <!-- ✅ 헤더: horizontal-scroll 밖에 독립 배치 -->
+  <div class="header-scroll-sync" id="headerScroll" style="
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+  ">
+    <div class="top-left-corner">시간</div>
+    <div class="day-header-item"><span>4월 30일</span><span>목요일</span></div>
+    <div class="day-header-item"><span>5월 1일</span><span>금요일</span></div>
+    <div class="day-header-item"><span>5월 2일</span><span>토요일</span></div>
+  </div>
+
+
+  <div class="horizontal-scroll" id="bodyScroll">
+    <div class="table-body">
+      <div style="display: flex;">
                     <div class="time-column">
                         <div class="time-slot">06</div><div class="time-slot">07</div>
                         <div class="time-slot">08</div><div class="time-slot">09</div>
@@ -319,11 +325,10 @@
                         <div class="event-block" style="height: var(--cell-height);">교회 도착 및 마침예배</div>
                         <div class="event-block" style="height: var(--cell-height);">귀가</div>
                         <div class="event-block" style="height: calc(var(--cell-height) * 8);"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
 </div>
         
 <section class="prayer-section">
