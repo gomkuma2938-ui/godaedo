@@ -125,26 +125,36 @@
 
         footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; background: #fff; }  
 
-/* 1. 화살표 가상 요소 생성 */
-.toggle-text::after {
-    content: '▾'; /* 화살표 삽입 */
-    display: inline-block;
-    margin-left: 5px;
-    transition: transform 0.3s ease; /* 부드러운 회전 효과 */
+/* 1. 우측 텍스트 영역 기본 설정 */
+.toggle-text {
+    font-size: 0.8rem;
+    color: #aaa;
+    font-weight: 400; /* 제목과 대비를 위해 가늘게 설정 */
+    display: flex;
+    align-items: center;
 }
 
-/* 2. details가 열렸을 때 화살표 회전 및 텍스트 변경 */
-details[open] .toggle-text::after {
-    transform: rotate(180deg); /* 180도 회전 */
+/* 2. 닫혀있을 때 '펼쳐보기' 표시 */
+.toggle-text::before {
+    content: '펼쳐보기';
 }
 
-/* 3. (선택사항) 열렸을 때 텍스트도 '접기'로 바꾸고 싶다면 아래 주석 해제 */
-details[open] .toggle-text {
-    font-size: 0; 
-}
+/* 3. 열려있을 때(details[open]) '접기'로 변경 */
 details[open] .toggle-text::before {
     content: '접기';
-    font-size: 0.8rem;
+}
+
+/* 4. 화살표 가상 요소 설정 */
+.toggle-text::after {
+    content: '▾';
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s ease; /* 부드러운 회전 */
+}
+
+/* 5. 열려있을 때 화살표 180도 회전 */
+details[open] .toggle-text::after {
+    transform: rotate(180deg);
 }
 
         
@@ -337,10 +347,20 @@ details[open] .toggle-text::before {
 </div>
 
 <details style="border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
-    <summary style="...">
-        고대도는? 
-        <span class="toggle-text">펼쳐보기</span>
-    </summary>
+        <summary style="
+            padding: 20px; 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            color: #222;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        ">
+            고대도는? 
+            <span class="toggle-text"></span>
+        </summary>
 
         <div style="overflow: hidden; border-radius: 12px; margin-bottom: 12px;">
             <img src="map1.jpg" 
