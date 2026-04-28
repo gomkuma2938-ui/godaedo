@@ -86,8 +86,8 @@ function scrollToVideo() {
 
 //테이블
 const bodyScroll = document.getElementById('bodyScroll');
-const headerInner = document.querySelector('.header-inner'); // ✅ headerScroll 말고 inner
+const headerInner = document.querySelector('.header-inner');
 
 bodyScroll.addEventListener('scroll', () => {
-  headerInner.style.transform = `translateX(-${bodyScroll.scrollLeft}px)`; // ✅ scrollLeft 대신 transform
+    headerInner.style.transform = `translateX(-${bodyScroll.scrollLeft}px)`;
 });
