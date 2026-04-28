@@ -138,9 +138,25 @@
 .schedule-root {
     width: 100%;
     height: 70vh;
-    overflow: scroll; /* auto → scroll */
+    overflow: scroll;
     border: 1px solid var(--border-color);
     position: relative;
+}
+
+@media screen and (min-width: 481px) {
+    .schedule-root {
+        height: auto;
+        overflow: visible;
+    }
+    .sticky-header-row {
+        position: relative; /* sticky 해제 */
+    }
+    .top-left-corner {
+        position: relative; /* sticky 해제 */
+    }
+    .time-column {
+        position: relative; /* sticky 해제 */
+    }
 }
 
 .table-body {
