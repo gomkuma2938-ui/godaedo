@@ -143,6 +143,24 @@ let isPinching = false;
 const modalImg = document.getElementById('modalImg');
 
 function applyTransform() {
+    const rect = modalImg.getBoundingClientRect();
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    
+    // 이미지 실제 크기
+    const imgW = modalImg.naturalWidth * currentScale / (modalImg.naturalWidth / modalImg.offsetWidth);
+    const scaledW = modalImg.offsetWidth * currentScale;
+    const scaledH = modalImg.offsetHeight * currentScale;
+
+    // 드래그 가능 범위 계산
+    const maxX = Math.max(0, (scaledW - screenW) / 2);
+    const maxY = Math.max(0, (scaledH - screenH) / 2);
+
+    translateX = Math.min(maxX, Math.max(-maxX, translateX));
+    translateY = Math.min(maxY, Math.max(-maxY, translateY));
+    lastTranslateX = translateX;
+    lastTranslateY = translateY;
+
     modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
 }
 
