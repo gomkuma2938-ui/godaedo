@@ -19,7 +19,13 @@
         }
 
         :root { --main: #0e6ddb; --bg: #ffffff; --gray: #444444; }
-        body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
+        body { 
+    margin: 0; 
+    font-family: 'Pretendard', -apple-system, sans-serif; 
+    background: #f0f0f0; /* ← 회색으로 바꾸면 wrapper가 가운데로 떠보여요 */
+    color: #333; 
+    overflow-x: hidden; 
+}
         /* 기존 wrapper 수정 */
         .wrapper { 
             width: 100%; /* 기본적으로 넓게 */
