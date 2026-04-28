@@ -120,144 +120,113 @@
         footer { text-align: center; padding: 20px 40px 40px 40px; color: #ccc; font-size: 0.8rem; background: #fff; }  
 
 :root {
-        --main-blue: #2563eb;
-        --header-blue: #1e3a8a;
-        --border-color: #e2e8f0;
-        --cell-height: 50px;
-        --header-height: 70px;
-        --time-width: 50px;
-        --day-width: 350px; /* 모바일에서 스와이프 유도하는 너비 */
-    }
+    --main-blue: #2563eb;
+    --header-blue: #1e3a8a;
+    --border-color: #e2e8f0;
+    --cell-height: 50px;
+    --header-height: 70px;
+    --time-width: 50px;
+    --day-width: 350px;
+}
 
-    /* 레이아웃 파괴 방지: 모바일 폭 고정 */
-    .schedule-root {
-        width: 100%;
-        max-width: 100vw;
-        overflow: hidden; 
-        border: 1px solid var(--border-color);
-        position: relative;
-    }
+.schedule-root {
+    width: 100%;
+    height: 70vh;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
 
-    /* 가로 스크롤 영역 */
-    .horizontal-scroll {
-        display: flex;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        width: 100%;
-    }
+.table-body {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
 
-    .table-body {
-        display: flex;
-        width: max-content;
-        position: relative;
-    }
+.sticky-header-row {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-    /* 헤더 동기화용 컨테이너 */
-    .header-scroll-sync {
-        position: fixed; /* sticky → fixed */
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        max-width: 480px;
-        z-index: 100;
-        background: var(--header-blue);
-        display: flex;
-        overflow: hidden;
-    }
-    
-    .header-inner {
-        display: flex;
-        flex-shrink: 0;
-    }
-    
-    .schedule-root {
-        padding-top: var(--header-height); /* fixed 헤더 높이만큼 밀어내기 */
-    }
+.top-left-corner {
+    width: var(--time-width);
+    height: var(--header-height);
+    background: var(--header-blue);
+    color: white;
+    position: sticky;
+    left: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    border-right: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.day-header-item {
+    width: var(--day-width);
+    height: var(--header-height);
+    background: var(--main-blue);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.day-header-item span:first-child { font-size: 10px; opacity: 0.8; }
+.day-header-item span:last-child { font-size: 15px; font-weight: bold; }
+
+.time-column {
+    width: var(--time-width);
+    flex-shrink: 0;
+    position: sticky;
+    left: 0;
+    z-index: 90;
+    background: #f8fafc;
+    border-right: 1px solid var(--border-color);
+}
+
+.time-slot {
+    height: var(--cell-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #94a3b8;
+    border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.data-column {
+    width: var(--day-width);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 15px;
+    background: #fff;
+    font-size: 14px;
+    color: #1e293b;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    box-sizing: border-box;
+    word-break: keep-all;
+}
+
+.blue-text { color: var(--main-blue); font-weight: bold; }
         
-    /* table-body를 flex로 (기존에 있던 래퍼 div 제거됨) */
-    .table-body {
-        display: flex;
-        width: max-content;
-    }
-    
-    /* top-left-corner에서 sticky 제거 */
-    .top-left-corner {
-        width: var(--time-width);
-        height: var(--header-height);
-        background: var(--header-blue);
-        color: white;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 12px;
-        border-right: 1px solid var(--border-color);
-    }
-
-    /* 날짜 칸들 */
-    .day-header-item {
-        width: var(--day-width);
-        height: var(--header-height);
-        background: var(--main-blue);
-        color: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        flex-shrink: 0;
-        border-right: 1px solid rgba(255,255,255,0.1);
-    }
-    .day-header-item span:first-child { font-size: 10px; opacity: 0.8; }
-    .day-header-item span:last-child { font-size: 15px; font-weight: bold; }
-
-    /* 왼쪽 시간 열 고정 */
-    .time-column {
-        width: var(--time-width);
-        flex-shrink: 0;
-        position: sticky;
-        left: 0;
-        z-index: 90;
-        background: #f8fafc;
-        border-right: 1px solid var(--border-color);
-    }
-
-    .time-slot {
-        height: var(--cell-height);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-        color: #94a3b8;
-        border-bottom: 1px solid var(--border-color);
-        box-sizing: border-box;
-    }
-
-    /* 데이터 컬럼 */
-    .data-column {
-        width: var(--day-width);
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .event-block {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 0 15px;
-        background: #fff;
-        font-size: 14px;
-        color: #1e293b;
-        border-bottom: 1px solid var(--border-color);
-        border-right: 1px solid var(--border-color);
-        box-sizing: border-box;
-        word-break: keep-all;
-    }
-
-    .blue-text { color: var(--main-blue); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -278,22 +247,19 @@
         </div>
 
 <div class="schedule-root">
+  <div class="table-body">
 
-  <!-- 헤더 (sticky) -->
-  <div class="header-scroll-sync" id="headerScroll">
-    <div class="header-inner">
+    <!-- 헤더 -->
+    <div class="sticky-header-row">
       <div class="top-left-corner">시간</div>
       <div class="day-header-item"><span>4월 30일</span><span>목요일</span></div>
       <div class="day-header-item"><span>5월 1일</span><span>금요일</span></div>
       <div class="day-header-item"><span>5월 2일</span><span>토요일</span></div>
     </div>
-  </div>
 
-  <!-- 바디 (가로 스크롤) -->
-  <div class="horizontal-scroll" id="bodyScroll">
-    <div class="table-body">
+    <!-- 바디 -->
+    <div style="display: flex;">
 
-      <!-- 시간 열 -->
       <div class="time-column">
         <div class="time-slot">06</div><div class="time-slot">07</div>
         <div class="time-slot">08</div><div class="time-slot">09</div>
@@ -307,7 +273,6 @@
         <div class="time-slot">24</div>
       </div>
 
-      <!-- 목요일 -->
       <div class="data-column">
         <div class="event-block" style="height: calc(var(--cell-height) * 12);"></div>
         <div class="event-block" style="height: var(--cell-height);">본대 집결</div>
@@ -317,7 +282,6 @@
         <div class="event-block" style="height: var(--cell-height);">취침</div>
       </div>
 
-      <!-- 금요일 -->
       <div class="data-column">
         <div class="event-block" style="height: var(--cell-height);">기상 및 개인정비</div>
         <div class="event-block blue-text" style="height: var(--cell-height);">아침예배 (조식)</div>
@@ -333,7 +297,6 @@
         <div class="event-block" style="height: var(--cell-height);">취침</div>
       </div>
 
-      <!-- 토요일 -->
       <div class="data-column">
         <div class="event-block blue-text" style="height: var(--cell-height);">아침예배</div>
         <div class="event-block" style="height: var(--cell-height);">개인 정비</div>
@@ -348,7 +311,6 @@
 
     </div>
   </div>
-
 </div>
         
 <section class="prayer-section">
