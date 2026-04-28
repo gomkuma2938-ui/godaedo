@@ -129,52 +129,66 @@ document.querySelectorAll('details img').forEach(img => {
         img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
     }
 
-    // 핀치줌
-    img.addEventListener('touchstart', e => {
-        if (e.touches.length === 2) {
-            isPinching = true;
-            startDist = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
-            startScale = currentScale;
-        } else if (e.touches.length === 1 && currentScale > 1) {
-            startX = e.touches[0].clientX - lastTranslateX;
-            startY = e.touches[0].clientY - lastTranslateY;
-        }
-    });
+    // 이미지 모달 확대
+function openModal(src) {
+    const modal = document.getElementById('imgModal');
+    const img = document.getElementById('modalImg');
+    img.src = src;
+    img.style.transform = 'scale(1)';
+    modal.classList.add('active');
+    currentScale = 1;
+    translateX = 0;
+    translateY = 0;
+}
 
-    img.addEventListener('touchmove', e => {
-        e.preventDefault();
-        if (e.touches.length === 2) {
-            const dist = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
-            currentScale = Math.min(Math.max(startScale * (dist / startDist), 1), 4);
-            applyTransform();
-        } else if (e.touches.length === 1 && currentScale > 1 && !isPinching) {
-            translateX = e.touches[0].clientX - startX;
-            translateY = e.touches[0].clientY - startY;
-            applyTransform();
-        }
-    }, { passive: false });
+document.getElementById('imgModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+});
 
-    img.addEventListener('touchend', e => {
-        if (e.touches.length < 2) {
-            isPinching = false;
-            lastTranslateX = translateX;
-            lastTranslateY = translateY;
-        }
-        if (e.touches.length === 0 && currentScale < 1.05) {
-            currentScale = 1;
-            translateX = 0;
-            translateY = 0;
-            lastTranslateX = 0;
-            lastTranslateY = 0;
-            img.style.transition = 'transform 0.3s ease';
-            applyTransform();
-            setTimeout(() => img.style.transition = '', 300);
-        }
-    });
+let startDist = 0, startScale = 1, currentScale = 1;
+let translateX = 0, translateY = 0;
+let startX = 0, startY = 0;
+let lastTranslateX = 0, lastTranslateY = 0;
+let isPinching = false;
+
+const modalImg = document.getElementById('modalImg');
+
+function applyTransform() {
+    modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
+}
+
+modalImg.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+        isPinching = true;
+        startDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        startScale = currentScale;
+    } else if (e.touches.length === 1) {
+        startX = e.touches[0].clientX - lastTranslateX;
+        startY = e.touches[0].clientY - lastTranslateY;
+    }
+});
+
+modalImg.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+        const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        currentScale = Math.min(Math.max(startScale * (dist / startDist), 1), 5);
+        applyTransform();
+    } else if (e.touches.length === 1 && !isPinching) {
+        translateX = e.touches[0].clientX - startX;
+        translateY = e.touches[0].clientY - startY;
+        applyTransform();
+    }
+}, { passive: false });
+
+modalImg.addEventListener('touchend', e => {
+    if (e.touches.length < 2) isPinching = false;
+    lastTranslateX = translateX;
+    lastTranslateY = translateY;
 });
