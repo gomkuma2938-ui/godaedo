@@ -116,3 +116,39 @@ function markPastEvents() {
 }
 
 markPastEvents();
+
+// 이미지 핀치줌
+document.querySelectorAll('details img').forEach(img => {
+    let startDist = 0, startScale = 1, currentScale = 1;
+
+    img.addEventListener('touchstart', e => {
+        if (e.touches.length === 2) {
+            startDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            startScale = currentScale;
+        }
+    });
+
+    img.addEventListener('touchmove', e => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            currentScale = Math.min(Math.max(startScale * (dist / startDist), 1), 4);
+            img.style.transform = `scale(${currentScale})`;
+            img.style.transition = 'none';
+        }
+    }, { passive: false });
+
+    img.addEventListener('touchend', e => {
+        if (e.touches.length < 2 && currentScale < 1.05) {
+            currentScale = 1;
+            img.style.transform = 'scale(1)';
+            img.style.transition = 'transform 0.3s ease';
+        }
+    });
+});
