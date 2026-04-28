@@ -117,17 +117,6 @@ function markPastEvents() {
 
 markPastEvents();
 
-// 이미지 핀치줌
-document.querySelectorAll('details img').forEach(img => {
-    let startDist = 0, startScale = 1, currentScale = 1;
-    let translateX = 0, translateY = 0;
-    let startX = 0, startY = 0;
-    let lastTranslateX = 0, lastTranslateY = 0;
-    let isPinching = false;
-
-    function applyTransform() {
-        img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
-    }
 
     // 이미지 모달 확대
 function openModal(src) {
