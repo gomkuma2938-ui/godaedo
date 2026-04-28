@@ -83,25 +83,3 @@ function scrollToVideo() {
     const videoSection = document.querySelector('.video-section');
     if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
 }
-
-//테이블
-const bodyScroll = document.getElementById('bodyScroll');
-const headerInner = document.querySelector('.header-inner');
-const headerScroll = document.getElementById('headerScroll');
-const scheduleRoot = document.querySelector('.schedule-root');
-
-// 가로 스크롤 동기화
-bodyScroll.addEventListener('scroll', () => {
-    headerInner.style.transform = `translateX(-${bodyScroll.scrollLeft}px)`;
-});
-
-// 헤더가 테이블 영역 밖에선 숨기기
-const scheduleObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        headerScroll.style.display = entry.isIntersecting ? 'flex' : 'none';
-    });
-}, { threshold: 0, rootMargin: `-${getComputedStyle(document.documentElement).getPropertyValue('--header-height')} 0px 0px 0px` });
-
-window.addEventListener('load', () => {
-    scheduleObserver.observe(scheduleRoot);
-});
