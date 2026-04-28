@@ -154,20 +154,27 @@
 
     /* 헤더 동기화용 컨테이너 */
     .header-scroll-sync {
-        overflow: hidden;
-        position: sticky;
+        position: fixed; /* sticky → fixed */
         top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 480px;
         z-index: 100;
         background: var(--header-blue);
         display: flex;
+        overflow: hidden;
     }
     
     .header-inner {
         display: flex;
         flex-shrink: 0;
-        transition: transform 0.0s; /* transform으로 동기화 */
     }
     
+    .schedule-root {
+        padding-top: var(--header-height); /* fixed 헤더 높이만큼 밀어내기 */
+    }
+        
     /* table-body를 flex로 (기존에 있던 래퍼 div 제거됨) */
     .table-body {
         display: flex;
