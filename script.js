@@ -83,3 +83,36 @@ function scrollToVideo() {
     const videoSection = document.querySelector('.video-section');
     if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
 }
+
+//시간표 회색처리
+function markPastEvents() {
+    const now = new Date();
+    const today = now.getDay(); // 0=일, 1=월 ... 4=목, 5=금, 6=토
+    const hour = now.getHours();
+
+    // 목=4월30일, 금=5월1일, 토=5월2일
+    const dayMap = { 2: 0, 5: 1, 6: 2 }; // 요일 → 컬럼 인덱스
+    const columns = document.querySelectorAll('.data-column');
+
+    columns.forEach((col, colIndex) => {
+        let accumulatedHour = 6; // 표가 06시부터 시작
+        col.querySelectorAll('.event-block').forEach(block => {
+            const blockHeight = block.offsetHeight;
+            const blockHours = blockHeight / 50; // --cell-height: 50px
+            const blockEndHour = accumulatedHour + blockHours;
+
+            // 이미 지난 날짜 컬럼은 전부 회색
+            if (dayMap[today] !== undefined && colIndex < dayMap[today]) {
+                block.classList.add('past');
+            }
+            // 오늘 컬럼은 현재 시간 지난 칸만 회색
+            else if (colIndex === dayMap[today] && blockEndHour <= hour) {
+                block.classList.add('past');
+            }
+
+            accumulatedHour = blockEndHour;
+        });
+    });
+}
+
+markPastEvents();
