@@ -83,3 +83,11 @@ function scrollToVideo() {
     const videoSection = document.querySelector('.video-section');
     if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
 }
+
+//테이블
+const bodyScroll = document.getElementById('bodyScroll');
+const headerScroll = document.getElementById('headerScroll');
+
+bodyScroll.addEventListener('scroll', () => {
+  headerScroll.scrollLeft = bodyScroll.scrollLeft;
+});
