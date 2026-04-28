@@ -123,33 +123,36 @@
         --main-blue: #2563eb;
         --header-blue: #1e3a8a;
         --border: #e2e8f0;
-        --cell-height: 44px; /* 한 칸 높이 고정 */
+        --cell-height: 44px; /* 1시간 높이 */
     }
 
-    /* 전체 틀: 페이지 스크롤 사용 */
+    /* 전체 틀 */
+    .schedule-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: visible; /* 부모에서 sticky를 방해하지 않도록 */
+    }
+
     .schedule-container {
         display: flex;
         width: 100%;
         background: #fff;
         font-family: sans-serif;
+        align-items: flex-start;
     }
 
-    /* 1. 시간 축: 왼쪽 고정 (Sticky) */
+    /* 1. 시간 축 (왼쪽 열 고정) */
     .time-axis {
         width: 60px;
         flex-shrink: 0;
         position: sticky;
         left: 0;
-        z-index: 30;
+        z-index: 100; /* 날짜 열보다 높아야 함 */
         background: #f8fafc;
-        border-right: 1px solid var(--border);
     }
 
     .time-head {
         height: 70px;
-        position: sticky;
-        top: 0;
-        z-index: 40;
         background: var(--header-blue);
         color: white;
         display: flex;
@@ -157,6 +160,10 @@
         justify-content: center;
         font-weight: bold;
         font-size: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 110; /* 가장 위에 위치 */
+        border-right: 1px solid var(--border);
     }
 
     .time-cell {
@@ -165,13 +172,15 @@
         align-items: center;
         justify-content: center;
         border-bottom: 1px solid var(--border);
-        font-size: 11px;
-        color: #94a3b8;
+        border-right: 1px solid var(--border);
+        font-size: 12px;
+        color: #64748b;
         box-sizing: border-box;
+        margin-top: -1px; /* 1px 어긋남 방지 */
     }
 
-    /* 2. 가로 스와이프 영역 */
-    .scroll-wrapper {
+    /* 2. 가로 스크롤 데이터 영역 */
+    .data-scroll-area {
         flex-grow: 1;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -182,34 +191,34 @@
         width: max-content;
     }
 
-    /* 3. 날짜별 컬럼: 너비 350px로 널찍하게 */
+    /* 3. 날짜 컬럼 (상단 행 고정) */
     .day-col {
         width: 350px; 
-        border-right: 1px solid var(--border);
+        background: #fff;
     }
 
-    /* 날짜 헤더: 상단 고정 (Sticky) */
     .day-head {
         height: 70px;
-        position: sticky;
-        top: 0;
-        z-index: 20;
         background: var(--main-blue);
         color: white;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0; /* 세로 스크롤 시 고정 */
+        z-index: 50;
+        border-right: 1px solid rgba(255,255,255,0.1);
     }
 
     .day-head span:first-child { font-size: 11px; opacity: 0.8; }
     .day-head span:last-child { font-size: 16px; font-weight: bold; }
 
-    /* 4. 내용물: 전부 화이트 배경 */
+    /* 4. 이벤트 셀 (내용물) */
     .event-cell {
         background: #fff;
         border-bottom: 1px solid var(--border);
+        border-right: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -219,6 +228,7 @@
         color: #1e293b;
         font-size: 14px;
         word-break: keep-all;
+        margin-top: -1px; /* 1px 어긋남 방지 핵심 */
     }
 
     .highlight { color: var(--main-blue); font-weight: bold; }
