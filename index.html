@@ -154,23 +154,29 @@
 
     /* 헤더 동기화용 컨테이너 */
     .header-scroll-sync {
-      overflow: hidden; /* 스크롤바 숨김, JS로만 제어 */
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--main-blue);
-      display: flex;
-      width: 100%;
+        overflow: hidden;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--main-blue);
+        display: flex;
+        width: 100%; /* 이건 유지 */
     }
-
-    /* 왼쪽 위 '시간' 칸 - 가장 높은 우선순위 */
+    
+    /* 헤더 안쪽 래퍼 추가 필요 */
+    .header-inner {
+        display: flex;
+        width: max-content; /* ✅ 핵심: 바디랑 같은 너비 */
+        flex-shrink: 0;
+    }
+    
+    /* top-left-corner에서 sticky 제거 */
     .top-left-corner {
         width: var(--time-width);
         height: var(--header-height);
         background: var(--header-blue);
         color: white;
-        position: sticky;
-        left: 0;
+        /* position: sticky; left: 0; ← 이거 제거 */
         z-index: 120;
         display: flex;
         align-items: center;
@@ -178,6 +184,7 @@
         font-weight: bold;
         font-size: 12px;
         border-right: 1px solid var(--border-color);
+        flex-shrink: 0; /* ✅ 추가 */
     }
 
     /* 날짜 칸들 */
@@ -271,6 +278,7 @@
     z-index: 100;
     display: flex;
   ">
+    <div class="header-inner">
     <div class="top-left-corner">시간</div>
     <div class="day-header-item"><span>4월 30일</span><span>목요일</span></div>
     <div class="day-header-item"><span>5월 1일</span><span>금요일</span></div>
