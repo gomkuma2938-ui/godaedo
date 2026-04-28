@@ -121,108 +121,107 @@
 
 :root {
         --main-blue: #2563eb;
-        --bg-gray: #f8fafc;
+        --header-blue: #1e3a8a;
         --border: #e2e8f0;
+        --cell-height: 44px; /* 한 칸 높이 고정 */
     }
 
-    /* 전체 틀: 세로를 억지로 늘리지 않음 */
+    /* 전체 틀: 페이지 스크롤 사용 */
     .schedule-container {
         display: flex;
         width: 100%;
         background: #fff;
-        font-family: -apple-system, sans-serif;
-        border-top: 1px solid var(--border);
+        font-family: sans-serif;
     }
 
-    /* 시간축: 고정 */
-    .time-col {
-        width: 50px;
+    /* 1. 시간 축: 왼쪽 고정 (Sticky) */
+    .time-axis {
+        width: 60px;
         flex-shrink: 0;
         position: sticky;
         left: 0;
-        background: var(--bg-gray);
+        z-index: 30;
+        background: #f8fafc;
         border-right: 1px solid var(--border);
-        z-index: 20;
     }
 
-    .time-header {
-        height: 60px;
+    .time-head {
+        height: 70px;
         position: sticky;
         top: 0;
-        background: #1e3a8a;
+        z-index: 40;
+        background: var(--header-blue);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 11px;
         font-weight: bold;
-        z-index: 30;
+        font-size: 12px;
     }
 
-    .time-slot {
-        height: 50px; /* 높이를 확 줄여서 한 화면에 많이 보이게 함 */
+    .time-cell {
+        height: var(--cell-height);
         display: flex;
         align-items: center;
         justify-content: center;
         border-bottom: 1px solid var(--border);
         font-size: 11px;
         color: #94a3b8;
+        box-sizing: border-box;
     }
 
-    /* 스와이프 영역 */
-    .data-wrapper {
+    /* 2. 가로 스와이프 영역 */
+    .scroll-wrapper {
         flex-grow: 1;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
-    .data-scroll-area {
+    .scroll-content {
         display: flex;
         width: max-content;
     }
 
-    .day-column {
-        width: 85vw; /* 화면의 85% 정도 차지 (스와이프 티가 확 남) */
+    /* 3. 날짜별 컬럼: 너비 350px로 널찍하게 */
+    .day-col {
+        width: 350px; 
         border-right: 1px solid var(--border);
     }
 
-    /* 날짜 헤더 상단 고정 */
-    .day-header {
-        height: 60px;
+    /* 날짜 헤더: 상단 고정 (Sticky) */
+    .day-head {
+        height: 70px;
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 20;
         background: var(--main-blue);
         color: white;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding-left: 15px;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
     }
 
-    .day-header span:first-child { font-size: 11px; opacity: 0.8; }
-    .day-header span:last-child { font-size: 16px; font-weight: bold; }
+    .day-head span:first-child { font-size: 11px; opacity: 0.8; }
+    .day-head span:last-child { font-size: 16px; font-weight: bold; }
 
-    /* 일정 아이템: 흰색 배경 + 깔끔한 텍스트 */
-    .event-item {
+    /* 4. 내용물: 전부 화이트 배경 */
+    .event-cell {
         background: #fff;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
-        padding: 0 15px;
+        justify-content: center;
+        text-align: center;
+        padding: 0 20px;
         box-sizing: border-box;
         color: #1e293b;
         font-size: 14px;
-        font-weight: 500;
+        word-break: keep-all;
     }
 
-    /* 30분 단위 등을 위해 높이 커스텀 가능 */
-    .h-1 { height: 50px; }
-    .h-2 { height: 100px; }
-    .h-1-5 { height: 75px; }
-
-    .highlight { color: var(--main-blue); font-weight: 700; }
-    .sub-text { font-size: 12px; color: #64748b; margin-left: 8px; font-weight: 400; }
+    .highlight { color: var(--main-blue); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -243,60 +242,60 @@
         </div>
 
 <div class="schedule-container">
-    <div class="time-col">
-        <div class="time-header">TIME</div>
-        <div class="time-slot">06</div><div class="time-slot">07</div>
-        <div class="time-slot">08</div><div class="time-slot">09</div>
-        <div class="time-slot">10</div><div class="time-slot">11</div>
-        <div class="time-slot">12</div><div class="time-slot">13</div>
-        <div class="time-slot">14</div><div class="time-slot">15</div>
-        <div class="time-slot">16</div><div class="time-slot">17</div>
-        <div class="time-slot">18</div><div class="time-slot">19</div>
-        <div class="time-slot">20</div><div class="time-slot">21</div>
-        <div class="time-slot">22</div><div class="time-slot">23</div>
-        <div class="time-slot">24</div>
+    <div class="time-axis">
+        <div class="time-head">시간</div>
+        <div class="time-cell">06</div><div class="time-cell">07</div>
+        <div class="time-cell">08</div><div class="time-cell">09</div>
+        <div class="time-cell">10</div><div class="time-cell">11</div>
+        <div class="time-cell">12</div><div class="time-cell">13</div>
+        <div class="time-cell">14</div><div class="time-cell">15</div>
+        <div class="time-cell">16</div><div class="time-cell">17</div>
+        <div class="time-cell">18</div><div class="time-cell">19</div>
+        <div class="time-cell">20</div><div class="time-cell">21</div>
+        <div class="time-cell">22</div><div class="time-cell">23</div>
+        <div class="time-cell">24</div>
     </div>
 
-    <div class="data-wrapper">
-        <div class="data-scroll-area">
-            <div class="day-column">
-                <div class="day-header"><span>4월 30일</span><span>목요일</span></div>
-                <div class="empty-slot" style="height: calc(var(--slot-height) * 12);"></div>
-                <div class="event-item" style="height: var(--slot-height);">본대 집결</div>
-                <div class="event-item highlight" style="height: var(--slot-height);">석식 및 장보기</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 2);">저녁집회 (여는예배)</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 2);">후발대 합류 및 출발</div>
-                <div class="event-item" style="height: var(--slot-height);">취침</div>
+    <div class="scroll-wrapper">
+        <div class="scroll-content">
+            
+            <div class="day-col">
+                <div class="day-head"><span>4월 30일</span><span>목요일</span></div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 12);"></div> <div class="event-cell" style="height: var(--cell-height);">본대 집결</div>
+                <div class="event-cell highlight" style="height: var(--cell-height);">석식 및 장보기</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 2);">저녁집회 (여는예배)</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 2);">후발대 합류 및 출발</div>
+                <div class="event-cell" style="height: var(--cell-height);">취침</div>
             </div>
 
-            <div class="day-column">
-                <div class="day-header"><span>5월 1일</span><span>금요일</span></div>
-                <div class="event-item" style="height: var(--slot-height);">기상 및 개인정비</div>
-                <div class="event-item highlight" style="height: var(--slot-height);">아침예배 (조식)</div>
-                <div class="event-item" style="height: var(--slot-height);">정리 후 출발</div>
-                <div class="event-item" style="height: var(--slot-height);">원산도 초전항 탑승</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 2.5);">고대도 성지순례</div>
-                <div class="event-item highlight" style="height: calc(var(--slot-height) * 1.5);">중식 (예약 필수)</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 4);">오후 투어 및 자유시간</div>
-                <div class="event-item highlight" style="height: var(--slot-height);">석식 (BBQ 파티)</div>
-                <div class="event-item" style="height: var(--slot-height);">일몰 구경</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 2);">캠프 파이어</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 2);">심야 레크리에이션</div>
-                <div class="event-item" style="height: var(--slot-height);">취침</div>
+            <div class="day-col">
+                <div class="day-head"><span>5월 1일</span><span>금요일</span></div>
+                <div class="event-cell" style="height: var(--cell-height);">기상 및 개인정비</div>
+                <div class="event-cell highlight" style="height: var(--cell-height);">아침예배 (조식)</div>
+                <div class="event-cell" style="height: var(--cell-height);">정리 후 출발</div>
+                <div class="event-cell" style="height: var(--cell-height);">원산도 초전항 탑승</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 2.5);">고대도 성지순례</div>
+                <div class="event-cell highlight" style="height: calc(var(--cell-height) * 1.5);">중식</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 4);">오후 투어 및 자유시간</div>
+                <div class="event-cell highlight" style="height: var(--cell-height);">석식 (BBQ 파티)</div>
+                <div class="event-cell" style="height: var(--cell-height);">일몰 구경</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 2);">캠프 파이어</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 2);">심야 레크리에이션</div>
+                <div class="event-cell" style="height: var(--cell-height);">취침</div>
             </div>
 
-            <div class="day-column">
-                <div class="day-header"><span>5월 2일</span><span>토요일</span></div>
-                <div class="event-item highlight" style="height: var(--slot-height);">아침예배</div>
-                <div class="event-item" style="height: var(--slot-height);">개인 정비</div>
-                <div class="event-item highlight" style="height: var(--slot-height);">조식</div>
-                <div class="event-item" style="height: var(--slot-height);">정리 후 출발</div>
-                <div class="event-item" style="height: calc(var(--slot-height) * 3);">죽도/무창포 상화원 투어</div>
-                <div class="event-item highlight" style="height: calc(var(--slot-height) * 2);">중식 후 출발</div>
-                <div class="event-item" style="height: var(--slot-height);">교회 도착 및 마침예배</div>
-                <div class="event-item" style="height: var(--slot-height);">귀가</div>
-                <div class="empty-slot" style="height: calc(var(--slot-height) * 8);"></div>
-            </div>
+            <div class="day-col">
+                <div class="day-head"><span>5월 2일</span><span>토요일</span></div>
+                <div class="event-cell highlight" style="height: var(--cell-height);">아침예배</div>
+                <div class="event-cell" style="height: var(--cell-height);">개인 정비</div>
+                <div class="event-cell highlight" style="height: var(--cell-height);">조식</div>
+                <div class="event-cell" style="height: var(--cell-height);">정리 후 출발</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 3);">죽도/무창포 상화원 투어</div>
+                <div class="event-cell highlight" style="height: calc(var(--cell-height) * 2);">중식 후 출발</div>
+                <div class="event-cell" style="height: var(--cell-height);">교회 도착 및 마침예배</div>
+                <div class="event-cell" style="height: var(--cell-height);">귀가</div>
+                <div class="event-cell" style="height: calc(var(--cell-height) * 8);"></div> </div>
+
         </div>
     </div>
 </div>
