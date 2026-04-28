@@ -88,7 +88,7 @@ function scrollToVideo() {
 function markPastEvents() {
     const now = new Date();
     const today = now.getDay(); // 0=일, 1=월 ... 4=목, 5=금, 6=토
-    const hour = now.getHours();
+    const hour = now.getHours() + now.getMinutes() / 60;
 
     // 목=4월30일, 금=5월1일, 토=5월2일
     const dayMap = { 4: 0, 5: 1, 6: 2 }; // 요일 → 컬럼 인덱스
