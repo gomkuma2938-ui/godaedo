@@ -385,6 +385,22 @@ details[open] .toggle-text::after {
             </p>
         </div>
     </div>
+
+    <div style="padding: 0 20px 40px 20px; text-align: center;">
+                <div onclick="closeDetails(this)" style="
+                    display: inline-block;
+                    margin-top: 20px;
+                    padding: 10px 25px;
+                    background: #f0f0f0;
+                    color: #666;
+                    border-radius: 20px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                ">
+                    닫기 ▴
+                </div>
+            </div>
+    </details>
 </details>
 
         
@@ -495,5 +511,28 @@ details[open] .toggle-text::after {
     <script src="script.js"></script>
     <script data-goatcounter="https://kumagom2938.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+    <script>
+    function closeDetails(element) {
+    // 1. 클릭된 요소에서 가장 가까운 <details> 태그를 찾습니다.
+    const details = element.closest('details');
+    
+    // 2. 해당 details의 위치를 미리 계산합니다.
+    const rect = details.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const targetY = rect.top + scrollTop - 20; // 상단 여유분 20px
+
+    // 3. 닫기 전에 부드럽게 위로 스크롤합니다.
+    window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+    });
+
+    // 4. 스크롤 이동 중에 닫히면 어색할 수 있으므로, 약간의 시간차를 두고 닫습니다.
+    setTimeout(() => {
+        details.removeAttribute('open');
+    }, 300); 
+}
+    </script>
 </body>
 </html>
