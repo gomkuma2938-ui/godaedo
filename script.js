@@ -22,8 +22,8 @@ function updateDDay() {
         // 2. 4월 30일 이전까지는 D-1, D-2... 표시
         timerEl.innerText = `D-${dDay}`;
     } else {
-        // 3. 4월 30일, 5월 1일, 5월 2일 모두 "D-Day ✨"로 표시
-        timerEl.innerText = "D-Day ✨";
+        // 3. 4월 30일, 5월 1일, 5월 2일 모두 "D-Day"로 표시
+        timerEl.innerText = "D-Day";
     }
 }
 
