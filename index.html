@@ -397,10 +397,9 @@ details[open] .toggle-text::after {
                     font-size: 0.9rem;
                     cursor: pointer;
                 ">
-                    닫기 ▴
+                    접기 ▴
                 </div>
             </div>
-    </details>
 </details>
 
         
@@ -513,26 +512,30 @@ details[open] .toggle-text::after {
         async src="//gc.zgo.at/count.js"></script>
 
     <script>
-    function closeDetails(element) {
-    // 1. 클릭된 요소에서 가장 가까운 <details> 태그를 찾습니다.
+// 하단 '내용 접기' 전용 함수
+function closeDetails(element) {
     const details = element.closest('details');
-    
-    // 2. 해당 details의 위치를 미리 계산합니다.
-    const rect = details.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const targetY = rect.top + scrollTop - 20; // 상단 여유분 20px
+    const targetY = details.getBoundingClientRect().top + window.pageYOffset - 20;
 
-    // 3. 닫기 전에 부드럽게 위로 스크롤합니다.
-    window.scrollTo({
-        top: targetY,
-        behavior: 'smooth'
-    });
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
 
-    // 4. 스크롤 이동 중에 닫히면 어색할 수 있으므로, 약간의 시간차를 두고 닫습니다.
+    // 스크롤이 어느 정도 올라간 뒤에 닫아야 자연스럽습니다.
     setTimeout(() => {
-        details.removeAttribute('open');
-    }, 300); 
+        details.open = false;
+    }, 200);
 }
+
+// 상단 'summary' 클릭 시 화면 튀지 않게 보정 (선택 사항)
+document.querySelector('details summary').addEventListener('click', function(e) {
+    const details = this.parentElement;
+    // 이미 열려있는 상태에서 닫으려고 클릭했을 때만 작동
+    if (details.open) {
+        e.preventDefault(); // 기본 동작 막기
+        const targetY = details.getBoundingClientRect().top + window.pageYOffset - 20;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        setTimeout(() => { details.open = false; }, 100);
+    }
+});
     </script>
 </body>
 </html>
