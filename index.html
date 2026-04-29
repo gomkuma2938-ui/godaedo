@@ -134,15 +134,26 @@
     align-items: center;
 }
 .toggle-text::before { content: '펼쳐보기'; }
-details[open] summary .toggle-text::before { content: '접기'; } /* summary 안에서만 바뀌게 한정 */
+/* details의 기본 화살표(삼각형)를 숨깁니다 */
+details summary::-webkit-details-marker { display:none; }
+details summary { list-style: none; outline: none; }
 
-.toggle-text::after {
-    content: '▾';
-    display: inline-block;
-    margin-left: 5px;
-    transition: transform 0.3s ease;
+/* [핵심] 스르륵 마스크 효과를 만드는 설정 */
+details > div {
+    display: grid;
+    grid-template-rows: 0fr; /* 닫혔을 때 높이 0 */
+    transition: grid-template-rows 0.5s ease-in-out; /* 애펙처럼 부드럽게 */
 }
-details[open] summary .toggle-text::after { transform: rotate(180deg); }
+
+/* 열렸을 때 높이를 내용물만큼 스르륵 키움 */
+details[open] > div {
+    grid-template-rows: 1fr; 
+}
+
+/* 내부 내용이 넘치지 않게 가려줌 (마스크 역할) */
+details > div > div {
+    overflow: hidden;
+}
 
 .bottom-toggle-text {
     font-size: 0.8rem;
@@ -347,7 +358,7 @@ details[open] summary .toggle-text::after { transform: rotate(180deg); }
     </div>
 </div>
 
-<details id="intro-details" style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; width: 100%; box-sizing: border-box;">
+<details id="intro-details" style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; width: 100%;">
     <summary style="
         padding: 20px; 
         font-size: 1.1rem; 
@@ -364,39 +375,40 @@ details[open] summary .toggle-text::after { transform: rotate(180deg); }
         <span class="toggle-text"></span>
     </summary>
 
-    <div style="padding: 0 20px;">
-        <div style="overflow: hidden; border-radius: 12px; margin-bottom: 12px;">
-            <img src="map1.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
-        </div>
-        <div style="overflow: hidden; border-radius: 12px; margin-bottom: 24px;">
-            <img src="map2.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
-        </div>
-    
-        <div style="text-align: center;">
-            <p style="font-size: 0.95rem; color: #555; line-height: 1.9; margin: 0; word-break: keep-all;">
-                충남 보령 태안해안국립공원 안에 위치한 작은 섬으로,<br>
-                1832년 한국 개신교 최초의 선교사<br>
-                <strong>칼 귀츨라프</strong>가 처음 발을 디딘 땅입니다.<br><br>
-                한국 최초의 주기도문 번역을 시도하고,<br>
-                한글의 우수성을 세계에 알린 그의 발자취가<br>
-                지금도 이 섬 곳곳에 남아 있습니다.<br><br>
-            </p>
-            <p style="font-family: 'Jeongmeokbawi', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0e6ddb; margin: 0 0 20px 0;">God愛島<br>하나님이 사랑하신 섬</p>
-        </div>
+    <div> 
+        <div style="padding: 0 20px;">
+            <div style="overflow: hidden; border-radius: 12px; margin: 12px 0;">
+                <img src="map1.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
+            </div>
+            <div style="overflow: hidden; border-radius: 12px; margin-bottom: 24px;">
+                <img src="map2.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
+            </div>
+        
+            <div style="text-align: center;">
+                <p style="font-size: 0.95rem; color: #555; line-height: 1.9; margin: 0; word-break: keep-all;">
+                    충남 보령 태안해안국립공원 안에 위치한 작은 섬으로,<br>
+                    1832년 한국 개신교 최초의 선교사<br>
+                    <strong>칼 귀츨라프</strong>가 처음 발을 디딘 땅입니다.<br><br>
+                    한국 최초의 주기도문 번역을 시도하고,<br>
+                    한글의 우수성을 세계에 알린 그의 발자취가<br>
+                    지금도 이 섬 곳곳에 남아 있습니다.<br><br>
+                </p>
+                <p style="font-family: 'Jeongmeokbawi', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0e6ddb; margin: 0 0 20px 0;">God愛島<br>하나님이 사랑하신 섬</p>
+            </div>
 
-        <div onclick="closeDetails(this)" style="
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 20px 0;
-            cursor: pointer;
-            border-top: 1px solid #f9f9f9;
-        ">
-            <span class="bottom-toggle-text"></span>
+            <div onclick="closeDetails(this)" style="
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding: 20px 0;
+                cursor: pointer;
+                border-top: 1px solid #f9f9f9;
+            ">
+                <span class="bottom-toggle-text"></span>
+            </div>
         </div>
     </div>
 </details>
-
         
 <h2 style="text-align: center; margin: 60px 0 30px 0;">수련회 일정</h2>
         
@@ -509,22 +521,16 @@ details[open] summary .toggle-text::after { transform: rotate(180deg); }
     <script>
 function closeDetails(element) {
     const details = element.closest('details');
-    const summary = details.querySelector('summary');
-    
-    // 1. 먼저 상단 summary 위치를 계산합니다.
-    const rect = summary.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const targetY = rect.top + scrollTop;
 
-    // 2. [핵심] 먼저 닫아버립니다. (스크롤 이동 전에 닫아야 계산이 정확함)
-    details.open = false;
+    // 1. 섹션 상단으로 부드럽게 스크롤 시작
+    const targetY = details.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
 
-    // 3. 닫힌 직후에 그 위치로 부드럽게 스크롤합니다.
-    // 닫힌 후에는 높이가 줄어들었으므로 사용자가 보던 지점으로 딱 붙게 됩니다.
-    window.scrollTo({
-        top: targetY,
-        behavior: 'smooth'
-    });
+    // 2. CSS 트랜지션(0.5초)이 거의 끝날 때쯤에 실제로 details를 닫음
+    // 그래야 '스르륵' 올라가는 도중에 내용이 툭 사라지지 않습니다.
+    setTimeout(() => {
+        details.open = false;
+    }, 480); // 0.5초보다 살짝 빠르게 설정
 }
     </script>
 </body>
