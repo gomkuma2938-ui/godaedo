@@ -139,9 +139,13 @@
     content: '펼쳐보기';
 }
 
-/* 3. 열려있을 때(details[open]) '접기'로 변경 */
+/* 하단 버튼용: details가 열려있을 때 내부의 toggle-text 처리 */
 details[open] .toggle-text::before {
     content: '접기';
+}
+
+details[open] .toggle-text::after {
+    transform: rotate(180deg);
 }
 
 /* 4. 화살표 가상 요소 설정 */
@@ -386,20 +390,17 @@ details[open] .toggle-text::after {
         </div>
     </div>
 
-    <div style="padding: 0 20px 40px 20px; text-align: center;">
-                <div onclick="closeDetails(this)" style="
-                    display: inline-block;
-                    margin-top: 20px;
-                    padding: 10px 25px;
-                    background: #f0f0f0;
-                    color: #666;
-                    border-radius: 20px;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                ">
-                    접기 ▴
-                </div>
+    <div onclick="closeDetails(this)" style="
+                display: flex;
+                justify-content: flex-end; /* 우측 정렬 */
+                align-items: center;
+                padding: 20px;
+                border-top: 1px dashed #eee; /* 내용과 구분되는 절취선 (선택사항) */
+                cursor: pointer;
+            ">
+                <span class="toggle-text" style="color: #aaa; font-size: 0.8rem;"></span>
             </div>
+        </div>
 </details>
 
         
