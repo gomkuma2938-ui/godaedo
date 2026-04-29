@@ -508,22 +508,23 @@ details[open] summary .toggle-text::after { transform: rotate(180deg); }
 
     <script>
 function closeDetails(element) {
-    // 1. 가장 가까운 details 찾기
     const details = element.closest('details');
+    const summary = details.querySelector('summary');
     
-    // 2. 위치 계산 (헤더가 살짝 보이게)
-    const targetY = details.getBoundingClientRect().top + window.pageYOffset;
+    // 1. 먼저 상단 summary 위치를 계산합니다.
+    const rect = summary.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const targetY = rect.top + scrollTop;
 
-    // 3. 부드럽게 위로 이동
+    // 2. [핵심] 먼저 닫아버립니다. (스크롤 이동 전에 닫아야 계산이 정확함)
+    details.open = false;
+
+    // 3. 닫힌 직후에 그 위치로 부드럽게 스크롤합니다.
+    // 닫힌 후에는 높이가 줄어들었으므로 사용자가 보던 지점으로 딱 붙게 됩니다.
     window.scrollTo({
         top: targetY,
         behavior: 'smooth'
     });
-
-    // 4. 즉시 혹은 약간의 딜레이 후 닫기
-    setTimeout(() => {
-        details.open = false;
-    }, 250);
 }
     </script>
 </body>
