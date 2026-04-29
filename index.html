@@ -129,36 +129,33 @@
 .toggle-text {
     font-size: 0.8rem;
     color: #aaa;
-    font-weight: 400; /* 제목과 대비를 위해 가늘게 설정 */
+    font-weight: 400;
     display: flex;
     align-items: center;
 }
+.toggle-text::before { content: '펼쳐보기'; }
+details[open] summary .toggle-text::before { content: '접기'; } /* summary 안에서만 바뀌게 한정 */
 
-/* 2. 닫혀있을 때 '펼쳐보기' 표시 */
-.toggle-text::before {
-    content: '펼쳐보기';
-}
-
-/* 하단 버튼용: details가 열려있을 때 내부의 toggle-text 처리 */
-details[open] .toggle-text::before {
-    content: '접기';
-}
-
-details[open] .toggle-text::after {
-    transform: rotate(180deg);
-}
-
-/* 4. 화살표 가상 요소 설정 */
 .toggle-text::after {
     content: '▾';
     display: inline-block;
     margin-left: 5px;
-    transition: transform 0.3s ease; /* 부드러운 회전 */
+    transition: transform 0.3s ease;
 }
+details[open] summary .toggle-text::after { transform: rotate(180deg); }
 
-/* 5. 열려있을 때 화살표 180도 회전 */
-details[open] .toggle-text::after {
-    transform: rotate(180deg);
+.bottom-toggle-text {
+    font-size: 0.8rem;
+    color: #aaa;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+.bottom-toggle-text::before { content: '접기'; }
+.bottom-toggle-text::after {
+    content: '▴';
+    display: inline-block;
+    margin-left: 5px;
 }
 
         
@@ -350,34 +347,32 @@ details[open] .toggle-text::after {
     </div>
 </div>
 
-<details style="border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
-        <summary style="
-            padding: 20px; 
-            font-size: 1.1rem; 
-            font-weight: 700; 
-            color: #222;
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        ">
-            고대도는? 
-            <span class="toggle-text"></span>
-        </summary>
+<details id="intro-details" style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; width: 100%; box-sizing: border-box;">
+    <summary style="
+        padding: 20px; 
+        font-size: 1.1rem; 
+        font-weight: 700; 
+        color: #222;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        outline: none;
+    ">
+        고대도는? 
+        <span class="toggle-text"></span>
+    </summary>
 
+    <div style="padding: 0 20px;">
         <div style="overflow: hidden; border-radius: 12px; margin-bottom: 12px;">
-            <img src="map1.jpg" 
-                 style="width: 100%; border-radius: 12px; cursor: pointer;"
-                 onclick="openModal(this.src)">
+            <img src="map1.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
         </div>
         <div style="overflow: hidden; border-radius: 12px; margin-bottom: 24px;">
-            <img src="map2.jpg" 
-                 style="width: 100%; border-radius: 12px; cursor: pointer;"
-                 onclick="openModal(this.src)">
+            <img src="map2.jpg" style="width: 100%; border-radius: 12px; cursor: pointer;" onclick="openModal(this.src)">
         </div>
     
-        <div style="padding: 0 20px 40px 20px; text-align: center;">
+        <div style="text-align: center;">
             <p style="font-size: 0.95rem; color: #555; line-height: 1.9; margin: 0; word-break: keep-all;">
                 충남 보령 태안해안국립공원 안에 위치한 작은 섬으로,<br>
                 1832년 한국 개신교 최초의 선교사<br>
@@ -385,22 +380,21 @@ details[open] .toggle-text::after {
                 한국 최초의 주기도문 번역을 시도하고,<br>
                 한글의 우수성을 세계에 알린 그의 발자취가<br>
                 지금도 이 섬 곳곳에 남아 있습니다.<br><br>
-                <p style="font-family: 'Jeongmeokbawi', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0e6ddb; margin: 0 0 20px 0;">God愛島<br>하나님이 사랑하신 섬</p>
             </p>
+            <p style="font-family: 'Jeongmeokbawi', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0e6ddb; margin: 0 0 20px 0;">God愛島<br>하나님이 사랑하신 섬</p>
+        </div>
+
+        <div onclick="closeDetails(this)" style="
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 0;
+            cursor: pointer;
+            border-top: 1px solid #f9f9f9;
+        ">
+            <span class="bottom-toggle-text"></span>
         </div>
     </div>
-
-    <div onclick="closeDetails(this)" style="
-                display: flex;
-                justify-content: flex-end; /* 우측 정렬 */
-                align-items: center;
-                padding: 20px;
-                border-top: 1px dashed #eee; /* 내용과 구분되는 절취선 (선택사항) */
-                cursor: pointer;
-            ">
-                <span class="toggle-text" style="color: #aaa; font-size: 0.8rem;"></span>
-            </div>
-        </div>
 </details>
 
         
@@ -513,30 +507,24 @@ details[open] .toggle-text::after {
         async src="//gc.zgo.at/count.js"></script>
 
     <script>
-// 하단 '내용 접기' 전용 함수
 function closeDetails(element) {
+    // 1. 가장 가까운 details 찾기
     const details = element.closest('details');
-    const targetY = details.getBoundingClientRect().top + window.pageYOffset - 20;
+    
+    // 2. 위치 계산 (헤더가 살짝 보이게)
+    const targetY = details.getBoundingClientRect().top + window.pageYOffset;
 
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
+    // 3. 부드럽게 위로 이동
+    window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+    });
 
-    // 스크롤이 어느 정도 올라간 뒤에 닫아야 자연스럽습니다.
+    // 4. 즉시 혹은 약간의 딜레이 후 닫기
     setTimeout(() => {
         details.open = false;
-    }, 200);
+    }, 250);
 }
-
-// 상단 'summary' 클릭 시 화면 튀지 않게 보정 (선택 사항)
-document.querySelector('details summary').addEventListener('click', function(e) {
-    const details = this.parentElement;
-    // 이미 열려있는 상태에서 닫으려고 클릭했을 때만 작동
-    if (details.open) {
-        e.preventDefault(); // 기본 동작 막기
-        const targetY = details.getBoundingClientRect().top + window.pageYOffset - 20;
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-        setTimeout(() => { details.open = false; }, 100);
-    }
-});
     </script>
 </body>
 </html>
