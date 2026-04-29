@@ -161,13 +161,26 @@ details[open] summary .toggle-text::before { content: '접기'; }
 details[open] summary .toggle-text::after { transform: rotate(180deg); }
 
 /* 스르륵 마스크 효과 (기존 유지) */
+/* [핵심] 투명도와 그리드 비율을 동시에 조절 */
 details > div {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.5s ease-in-out;
+    opacity: 0; /* 기본적으로 투명 */
+    transition: 
+        grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+        opacity 0.5s ease; 
 }
-details[open] > div { grid-template-rows: 1fr; }
-details > div > div { overflow: hidden; }
+
+/* 열렸을 때 불투명도 1 */
+details[open] > div {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+/* 내부 마스크 역할 */
+details > div > div {
+    overflow: hidden;
+}
 
 .bottom-toggle-text {
     font-size: 0.8rem;
@@ -535,23 +548,28 @@ details > div > div { overflow: hidden; }
     <script>
 function closeDetails(element) {
     const details = element.closest('details');
+    const content = details.querySelector('div'); // 애니메이션 wrapper
 
-    // 1. 위치 계산: (요소의 절대위치) - (화면 높이의 1/3)
-    // 이렇게 하면 접혔을 때 제목이 화면 상단에서 1/3 지점쯤에 위치합니다.
-    const rect = details.getBoundingClientRect();
-    const offset = window.innerHeight / 3; 
-    const targetY = rect.top + window.pageYOffset - offset;
+    // 1. 사라지는 느낌을 주기 위해 내부 투명도를 먼저 조절 (CSS와 연동)
+    content.style.opacity = "0";
 
-    // 2. 부드럽게 스크롤 이동
-    window.scrollTo({ 
-        top: targetY, 
-        behavior: 'smooth' 
+    // 2. 위치 계산 (화면 상단에서 1/3 지점 안착)
+    const offset = window.innerHeight / 3;
+    const targetY = details.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    // 3. 부드러운 스크롤 실행
+    window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
     });
 
-    // 3. 접히는 애니메이션 기다린 후 open 해제
+    // 4. [중요] '팟' 사라지는 걸 막기 위해 딜레이를 600ms로 상향 조정
+    // 스크롤이 거의 멈추고, 그리드 애니메이션이 완전히 끝난 뒤에 닫습니다.
     setTimeout(() => {
         details.open = false;
-    }, 480);
+        // 다음 오픈을 위해 불투명도 초기화 (인라인 스타일 제거)
+        content.style.opacity = "";
+    }, 600); 
 }
     </script>
 </body>
