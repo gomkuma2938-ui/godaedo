@@ -191,31 +191,52 @@ details[open] summary .toggle-text::after {
     margin-bottom: -2px; /* 위치 미세조정 */
 }
 
-/* [핵심] 투명도 애니메이션 강화 */
+/* details 기본 설정 */
+details summary::-webkit-details-marker { display:none; }
+details summary { list-style: none; outline: none; }
+
+/* [상단] 텍스트 변경 로직: 열렸을 때/닫혔을 때 텍스트를 각각 준비 */
+.toggle-text::before { content: '펼쳐보기'; }
+details[open] summary .toggle-text::before { content: '접기'; }
+
+/* [공통] 우측 텍스트 & 화살표 스타일 */
+.toggle-text, .bottom-toggle-text {
+    font-size: 0.8rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* [공통] 꺾쇠 화살표 디자인 (통일) */
+.toggle-text::after, .bottom-toggle-text::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid #aaa;
+    border-bottom: 1.5px solid #aaa;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+/* [상단 화살표] 닫힘: 아래(rotate 45), 열림: 위(rotate -135) */
+.toggle-text::after { transform: rotate(45deg); }
+details[open] summary .toggle-text::after { transform: rotate(-135deg); }
+
+/* [하단 화살표] 항상 위를 향함 (접기 버튼이므로) */
+.bottom-toggle-text::after { 
+    transform: rotate(-135deg); 
+    margin-bottom: -2px; /* 위치 보정 */
+}
+
+/* 스르륵 슬라이딩 효과 (투명도 제외, 애니메이션만 유지) */
 details > div {
     display: grid;
     grid-template-rows: 0fr;
-    opacity: 1; /* 기본은 보임 */
-    transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* 닫히는 중임을 알리는 클래스 (JS에서 추가할 예정) */
-details.is-closing > div {
-    opacity: 0;
-    transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease 0.2s;
-}
-
 details[open] > div { grid-template-rows: 1fr; }
 details > div > div { overflow: hidden; }
-
-/* 열렸을 때는 즉시 선명하게 */
-details[open] > div {
-    grid-template-rows: 1fr;
-    opacity: 1;
-    transition: 
-        grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-        opacity 0.2s ease; /* 열릴 땐 딜레이 없이 팍! */
-}
 
 .bottom-toggle-text {
     font-size: 0.8rem;
@@ -584,24 +605,20 @@ details[open] > div {
 function closeDetails(element) {
     const details = element.closest('details');
 
-    // 1. 닫히는 클래스 부여 (CSS에서 opacity 애니메이션 발동)
-    details.classList.add('is-closing');
-
-    // 2. 위치 계산 (화면 1/3 지점)
+    // 1. 위치 계산: 화면 상단에서 1/3 지점 (여유 있게 안착)
     const offset = window.innerHeight / 3;
     const targetY = details.getBoundingClientRect().top + window.pageYOffset - offset;
 
-    // 3. 스크롤 시작
+    // 2. 부드럽게 스크롤 이동
     window.scrollTo({
         top: targetY,
         behavior: 'smooth'
     });
 
-    // 4. 애니메이션 끝난 후 상태 초기화
+    // 3. 내용이 접히는 애니메이션이 끝날 때쯤 open 닫기
     setTimeout(() => {
         details.open = false;
-        details.classList.remove('is-closing'); // 다음 오픈을 위해 클래스 제거
-    }, 600);
+    }, 480);
 }
     </script>
 </body>
